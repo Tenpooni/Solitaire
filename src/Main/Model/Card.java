@@ -3,10 +3,14 @@ package Model;
 public class Card {
     private final int value;
     private final Suit suit;
+    private boolean selected;
+    private boolean isFaceUp;
 
-    public Card(int value, Suit suit) {
+    public Card(int value, Suit suit, boolean isFaceUp) {
         this.value = value;
         this.suit = suit;
+        this.selected = false;
+        this.isFaceUp = isFaceUp;
     }
 
     public int getValue() {
@@ -17,8 +21,20 @@ public class Card {
         return this.suit;
     }
 
+    public boolean getFaceUp() {
+        return this.isFaceUp;
+    }
+
+    public void setFaceUp() {
+        this.isFaceUp = true;
+    }
+
+    public void setFaceDown() {
+        this.isFaceUp = false;
+    }
+
     public String toString() {
-        return this.stringConversion() + " of " + suit + "S";
+        return this.stringConversion() + " of " + suit + "S" + " : FaceUp " + isFaceUp;
     }
 
     private String stringConversion() {
@@ -36,4 +52,6 @@ public class Card {
         }
         return str;
     }
+
+
 }
