@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Solitaire {
@@ -11,18 +12,22 @@ public class Solitaire {
     //full Deck to draw cards from
     private final ArrayList<Card> fullDeck = new ArrayList<>();
 
-    private final Deck active;
+    private final Stack active;
 
     public Solitaire() {
-        this.active = new Deck("ACTIVE");
-        makeFullDeck();
+        this.active = new Stack("ACTIVE");
+        initiateDeck();
         shuffle(active, 5, 3);
 
         printStack(active);
     }
 
+    public Stack getActive() {
+        return active;
+    }
+
     //EFFECTS: Initiate 52 cards in starting deck
-    private void makeFullDeck() {
+    private void initiateDeck() {
         for (Suit suit : Suit.values()) {
             for (int i = 1; i <= 13; i++) {
                 fullDeck.add(new Card(i, suit, false));
@@ -31,9 +36,9 @@ public class Solitaire {
     }
 
     //EFFECTS: select amount of faceDown and faceUp cards to add to a deck
-    private void shuffle(Deck into, int faceDown, int faceUp) {
-        ArrayList<Card> faceDownCards = setFace(getNumCards(faceDown), false);
-        ArrayList<Card> faceUpCards = setFace(getNumCards(faceUp), true);
+    private void shuffle(Stack into, int faceDown, int faceUp) {
+        ArrayList<Card> faceDownCards = setFace(drawNumCards(faceDown), false);
+        ArrayList<Card> faceUpCards = setFace(drawNumCards(faceUp), true);
         into.addCards(faceDownCards);
         into.addCards(faceUpCards);
     }
@@ -51,13 +56,15 @@ public class Solitaire {
     }
 
     //EFFECTS: draws randomized number of cards from full deck
-    private ArrayList<Card> getNumCards(int amount) {
+    private ArrayList<Card> drawNumCards(int amount) {
+        Collections.shuffle(fullDeck);
+
         ArrayList<Card> cards = new ArrayList<>();
-        Random rand = new Random();
+        //Random rand = new Random();
 
         for (int i = 0; i < amount; i++) {
-            int randInt = rand.nextInt(fullDeck.size());
-            Card card = fullDeck.get(randInt);
+            //int randInt = rand.nextInt(fullDeck.size());
+            Card card = fullDeck.get(i);
             fullDeck.remove(card);
             cards.add(card);
         }
@@ -67,9 +74,9 @@ public class Solitaire {
 
 
     //print to Console
-    private void printStack(Deck d) {
-        System.out.println(d.getName());
-        for (Card c : d.getCards()) {
+    private void printStack(Stack s) {
+        System.out.println(s.getName());
+        for (Card c : s.viewAllCards()) {
             System.out.println(c.toString());
         }
     }

@@ -13,8 +13,32 @@ public class Card {
         this.isFaceUp = isFaceUp;
     }
 
-    public int getValue() {
-        return this.value;
+    public String getValueString() {
+        String str = "";
+        if (this.value == 1) {
+            str = "A";
+        } else if (this.value == 11) {
+            str = "J";
+        } else if (this.value == 12) {
+            str = "Q";
+        } else if (this.value == 13) {
+            str = "K";
+        } else {
+            str = String.valueOf(this.value);
+        }
+        return str;
+    }
+
+    public String getSuitString() {
+        if (this.suit == Suit.HEART) {
+            return "♥";
+        } else if (this.suit == Suit.DIAMOND) {
+            return "♦";
+        } else if (this.suit == Suit.CLUB) {
+            return "♣";
+        } else {
+            return "♠";
+        }
     }
 
     public Suit getSuit() {
@@ -31,6 +55,10 @@ public class Card {
 
     public void setFaceDown() {
         this.isFaceUp = false;
+    }
+
+    public void flip() {
+        this.isFaceUp = !this.isFaceUp;
     }
 
     public String toString() {
