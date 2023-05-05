@@ -6,9 +6,6 @@ import java.util.Random;
 
 public class Solitaire {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
-
     //full Deck to draw cards from
     private final ArrayList<Card> fullDeck = new ArrayList<>();
 
@@ -60,10 +57,8 @@ public class Solitaire {
         Collections.shuffle(fullDeck);
 
         ArrayList<Card> cards = new ArrayList<>();
-        //Random rand = new Random();
 
         for (int i = 0; i < amount; i++) {
-            //int randInt = rand.nextInt(fullDeck.size());
             Card card = fullDeck.get(i);
             fullDeck.remove(card);
             cards.add(card);
@@ -73,7 +68,8 @@ public class Solitaire {
     }
 
 
-    //print to Console
+    //TODO: remove once GUI finished
+    //print to Console, for testing only
     private void printStack(Stack s) {
         System.out.println(s.getName());
         for (Card c : s.viewAllCards()) {

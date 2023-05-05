@@ -15,8 +15,16 @@ public class Screen extends JPanel{
     private Solitaire solitaire;
 
     public Screen(Solitaire s) {
-        setPreferredSize(new Dimension(solitaire.WIDTH, solitaire.HEIGHT));
-        setBackground(Color.GREEN.darker().darker().darker());
+        super();
         this.solitaire = s;
+    }
+
+
+    //TODO: Make sure this doesn't conflict with SolitaireGUI
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+
     }
 }

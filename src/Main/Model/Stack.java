@@ -19,25 +19,22 @@ public class Stack {
         return this.name;
     }
 
-    //EFFECTS: returns unmodifiable list of all cards in deck IN REVERSE ORDER
+    //EFFECTS: returns unmodifiable list of all cards in deck
     public List<Card> viewAllCards() {
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.addAll(this.faceUp);
+        cards.addAll(this.faceDown);
+        return Collections.unmodifiableList(cards);
+    }
+
+    //TODO: GUI prints in reverse order, fix this method?
+    public List<Card> viewReverseCards() {
         ArrayList<Card> cards = new ArrayList<>();
         cards.addAll(this.faceUp);
         cards.addAll(this.faceDown);
         Collections.reverse(cards);
         return Collections.unmodifiableList(cards);
     }
-
-    public List<Card> viewFaceUpCards() {
-        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
-        return Collections.unmodifiableList(cards);
-    }
-
-    public List<Card> viewFaceDownCards() {
-        ArrayList<Card> cards = new ArrayList<>(this.faceDown);
-        return Collections.unmodifiableList(cards);
-    }
-
 
     //EFFECTS: Adds all cards first into faceDown pile then calls organizeStack to sort
     public void addCards(ArrayList<Card> cards) {
@@ -124,8 +121,7 @@ public class Stack {
 
     //EFFECTS: flips all cards from faceUp to faceDown and puts them at back of faceDown stack
     public void flipDown() {
-        ArrayList<Card> cardsToFlip = new ArrayList<>();
-        cardsToFlip.addAll(this.faceUp);
+        ArrayList<Card> cardsToFlip = new ArrayList<>(this.faceUp);
         removeCards(cardsToFlip, true);
 
         for (Card c : cardsToFlip) {

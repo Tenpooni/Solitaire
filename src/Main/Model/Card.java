@@ -57,6 +57,7 @@ public class Card {
         this.isFaceUp = false;
     }
 
+    //TODO: remove if unneeded
     public void flip() {
         this.isFaceUp = !this.isFaceUp;
     }

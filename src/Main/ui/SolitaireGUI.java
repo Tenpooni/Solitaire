@@ -1,7 +1,5 @@
 package ui;
 
-import Model.Card;
-import Model.Deck;
 import Model.Solitaire;
 
 import javax.swing.*;
@@ -15,24 +13,13 @@ public class SolitaireGUI extends JFrame {
     private Solitaire solitaire;
     private Screen screen;
 
-
-
     public SolitaireGUI() {
         super("Solitaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
         solitaire = new Solitaire();
+
         initializeGraphics();
-
-        //screen = new Screen(solitaire);
-
-        //add(screen);
-
-
-        //pack();
-        //centreOnScreen();
-        //setVisible(true);
     }
 
     private void centreOnScreen() {
@@ -43,7 +30,6 @@ public class SolitaireGUI extends JFrame {
     private void initializeGraphics() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        //getContentPane().setBackground(Color.GREEN.darker().darker().darker());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         addDeckGUI();
@@ -56,6 +42,13 @@ public class SolitaireGUI extends JFrame {
     private void addDeckGUI() {
         DeckGUI newDeckGUI = new DeckGUI(this.solitaire);
         add(newDeckGUI, BorderLayout.CENTER);
+        validate();
+    }
+
+    //TODO: add text UI panel
+    private void addScreen() {
+        Screen newScreen = new Screen(this.solitaire);
+        add(newScreen, BorderLayout.SOUTH);
         validate();
     }
 }
