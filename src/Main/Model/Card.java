@@ -14,15 +14,11 @@ public class Card extends JPanel {
     private boolean isFaceUp;
     private Rectangle bound;
 
-    private final int CARDWIDTH = 70;
-    private final int CARDHEIGHT = 100;
-
     public Card(int value, Suit suit, boolean isFaceUp) {
         this.value = value;
         this.suit = suit;
         this.selected = false;
         this.isFaceUp = isFaceUp;
-        this.bound = bound;
     }
 
     public String getValueString() {
@@ -65,17 +61,14 @@ public class Card extends JPanel {
         this.isFaceUp = true;
     }
 
+    //EFFECTS: when a card is put faceDown, it is also deselected
     public void setFaceDown() {
         this.isFaceUp = false;
+        this.selected = false;
     }
 
     public void setBound(Rectangle bound) {
         this.bound = bound;
-    }
-
-    //TODO: remove if unneeded
-    public void flip() {
-        this.isFaceUp = !this.isFaceUp;
     }
 
     public String toString() {
@@ -98,13 +91,14 @@ public class Card extends JPanel {
         return str;
     }
 
-
-    public void select(MouseEvent e) {
-        if (!this.selected) {
+    //EFFECTS: Can only set select on faceUp card
+    public void select() {
+        if (!this.selected && this.isFaceUp) {
             this.selected = true;
         }
     }
 
+    //EFFECTS: deselects Card
     public void deSelect() {
         if (this.selected) {
             this.selected = false;
@@ -115,15 +109,8 @@ public class Card extends JPanel {
         return this.selected;
     }
 
-
-
-
-
-    //FIX THESE METHODS
     // EFFECTS: return true if the given Point (x,y) is contained within the bounds of this Shape
     public boolean contains(Point point) {
-        //int point_x = point.x;
-        //int point_y = point.y;
         return this.bound.contains(point);
     }
 }

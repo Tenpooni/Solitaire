@@ -7,22 +7,26 @@ import Model.Suit;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class DeckGUI extends JPanel {
 
     private final Solitaire solitaire;
+    private ArrayList<Stack> decks;
     private final int CARDWIDTH = 70;
     private final int CARDHEIGHT = 100;
     private final int cardOFFSET = 20;
-    private final int stackOFFSET = 70;
+    private final int stackOFFSET = 35;
+
+
+    private BasicStroke defaultLine = new BasicStroke(1);
 
 
     public DeckGUI(Solitaire s) {
         super();
         this.solitaire = s;
+        this.decks = solitaire.getDecks();
     }
 
     @Override
@@ -32,10 +36,15 @@ public class DeckGUI extends JPanel {
         setBackground(Color.GREEN.darker().darker().darker());
 
         Graphics2D g2d = (Graphics2D) g.create();
-        printStack(g2d, this.solitaire.getActive(), 150, 50);
+
+        int deltaX = 0;
+        for (Stack s : decks) {
+            printStack(g2d, s, stackOFFSET + deltaX, 150);
+            deltaX += (stackOFFSET + CARDWIDTH);
+        }
     }
 
-    //EFFECTS: prints entire stack, each next card is OFFSET distance down
+    //EFFECTS: prints entire stack, each next card is cardOFFSET distance below the next
     private void printStack(Graphics2D g2d, Stack stack, int xPos, int yPos) {
         Collection<Card> cards = stack.viewReverseCards();
         int deltaY = cardOFFSET;
@@ -56,45 +65,52 @@ public class DeckGUI extends JPanel {
         String cardText = getCardText(c);
         Color textColor = getColor(c);
         if (c.getFaceUp()) {
-            paintFaceUpCard(g2d, cardText, textColor, xPos, yPos);
+            paintFaceUpCard(g2d, cardText, textColor, xPos, yPos, c.isSelected());
         } else {
             paintFaceDownCard(g2d, xPos, yPos);
-
         }
         cardGraphic.dispose();
     }
 
-    //EFFECTS: helper function for drawing card base
-    private void drawCardBase(Graphics2D g2d, Rectangle bounds, Color fill, Color border, int xPos, int yPos) {
+    //EFFECTS: helper function for drawing card base, border is thicker/orange if the card is currently selected
+    private void drawCardBase(Graphics2D g2d, Rectangle bounds, Color fill, Color border, boolean isSelected) {
+        Stroke defaultStroke = g2d.getStroke();
         g2d.setColor(fill);
         g2d.fill(bounds);
+        if (isSelected) {
+            border = Color.ORANGE;
+            g2d.setStroke(new BasicStroke(3));
+        }
         g2d.setColor(border);
         g2d.draw(bounds);
+        g2d.setStroke(defaultStroke);
     }
 
     //EFFECTS: draws blank for stack with no cards
     private void printStackBacking(Graphics2D g2d, int xPos, int yPos) {
         Rectangle bounds = new Rectangle(xPos, yPos, CARDWIDTH, CARDHEIGHT);
-        drawCardBase(g2d, bounds, Color.GREEN.darker().darker().darker().darker(), Color.BLACK, xPos, yPos);
+        drawCardBase(g2d, bounds, Color.GREEN.darker().darker().darker().darker(), Color.BLACK, false);
     }
 
     //EFFECTS: draws individual faceDown card
     private void paintFaceDownCard(Graphics2D g2d, int xPos, int yPos) {
         Rectangle bounds = new Rectangle(xPos, yPos, CARDWIDTH, CARDHEIGHT);
-        drawCardBase(g2d, bounds, Color.GRAY, Color.BLACK, xPos, yPos);
+        drawCardBase(g2d, bounds, Color.GRAY, Color.BLACK, false);
     }
 
     //EFFECTS: draws individual faceUp card
-    private void paintFaceUpCard(Graphics2D g2d, String text, Color textColor, int xPos, int yPos) {
+    private void paintFaceUpCard(Graphics2D g2d, String text, Color textColor, int xPos, int yPos, boolean isSelected) {
         Rectangle bounds = new Rectangle(xPos, yPos, CARDWIDTH , CARDHEIGHT);
-        drawCardBase(g2d, bounds, Color.WHITE, Color.BLACK, xPos, yPos);
+
+        drawCardBase(g2d, bounds, Color.WHITE, Color.BLACK, isSelected);
 
         Graphics2D topLeftText = (Graphics2D) g2d.create();
-        paintCardText(topLeftText, bounds, text, textColor, 5, 5);
+        paintCardText(topLeftText, bounds, text, textColor, 6, 5);
         topLeftText.dispose();
 
         Graphics2D bottomRightText = (Graphics2D) g2d.create();
-        paintCardText(bottomRightText, bounds, text, textColor, CARDWIDTH - (CARDWIDTH / 3), CARDHEIGHT - (CARDHEIGHT / 5));
+        paintCardText(bottomRightText, bounds, text, textColor,
+                CARDWIDTH - (CARDWIDTH * 2 / 5), CARDHEIGHT - (CARDHEIGHT / 5));
         bottomRightText.dispose();
     }
 
@@ -112,7 +128,7 @@ public class DeckGUI extends JPanel {
         }
     }
 
-    //EFFECTS: Draws on card text
+    //EFFECTS: Draws card text
     private void paintCardText(Graphics2D g2d, Rectangle bounds, String text, Color textColor, int xPad, int yPad) {
         FontMetrics fm = g2d.getFontMetrics();
 
@@ -123,11 +139,13 @@ public class DeckGUI extends JPanel {
     }
 
 
-    //FIX THIS METHOD
+    //EFFECTS: returns card if point clicked contains one, null otherwise
     public Card getCardAtPoint(Point point) {
-        for (Card c : solitaire.getActive().viewAllCards()) {
-            if (c.contains(point)) {
-                return c;
+        for (Stack s : solitaire.getDecks()) {
+            for (Card c : s.viewAllCards()) {
+                if (c.contains(point)) {
+                    return c;
+                }
             }
         }
         return null;

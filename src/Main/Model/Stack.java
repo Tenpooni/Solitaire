@@ -15,10 +15,6 @@ public class Stack {
         this.faceDown = new ArrayList<>();
     }
 
-    public String getName() {
-        return this.name;
-    }
-
     //EFFECTS: returns unmodifiable list of all cards in deck
     public List<Card> viewAllCards() {
         ArrayList<Card> cards = new ArrayList<>();

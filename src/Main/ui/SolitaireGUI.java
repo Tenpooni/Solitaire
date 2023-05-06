@@ -13,7 +13,7 @@ public class SolitaireGUI extends JFrame {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
 
-    private boolean isSelecting = false;
+    private Card selection;
 
     private DeckGUI currentDeckGUI;
     private Solitaire solitaire;
@@ -32,6 +32,12 @@ public class SolitaireGUI extends JFrame {
     private void centreOnScreen() {
         Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
+    }
+
+    // EFFECTS:  initializes a MouseListener to be used in the JFrame
+    private void initializeInteraction() {
+        Click gml = new Click();
+        addMouseListener(gml);
     }
 
     private void initializeGraphics() {
@@ -53,29 +59,29 @@ public class SolitaireGUI extends JFrame {
         validate();
     }
 
-    // EFFECTS:  initializes a MouseListener to be used in the JFrame
-    private void initializeInteraction() {
-        Click gml = new Click();
-        addMouseListener(gml);
-    }
 
 
 
-
+    //REQUIRES: selected card must be faceUp
+    //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
+    //TODO: CHANGE METHODS FOR CLICK OTHER DECK INTERACTIONS
     private void handleMouseClick(MouseEvent e) {
-        //THIS IS NOT
         Card c = getCardAtMouse(e.getPoint());
-        if (c != null) {
-            System.out.println(c.toString() + " clicked");
-        }
 
-        //THIS IS WORKING
-        if (isSelecting) {
-            System.out.println("isSelecting");
+        if (c != null) {
+            if (selection != null) {
+                selection.deSelect();
+            }
+            selection = c;
+            selection.select();
         } else {
-            System.out.println("isNotSelecting");
+            if (selection != null) {
+                selection.deSelect();
+            }
         }
+        repaint();
     }
+
 
     private class Click extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
