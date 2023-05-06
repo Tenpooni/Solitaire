@@ -8,7 +8,6 @@ public class Solitaire {
 
     //full Deck to draw cards from
     private final ArrayList<Card> fullDeck = new ArrayList<>();
-
     private final Stack active;
 
     public Solitaire() {
@@ -66,7 +65,6 @@ public class Solitaire {
 
         return cards;
     }
-
 
     //TODO: remove once GUI finished
     //print to Console, for testing only

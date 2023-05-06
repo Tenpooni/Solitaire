@@ -7,6 +7,8 @@ import Model.Suit;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Collection;
 
 public class DeckGUI extends JPanel {
@@ -16,6 +18,7 @@ public class DeckGUI extends JPanel {
     private final int CARDHEIGHT = 100;
     private final int cardOFFSET = 20;
     private final int stackOFFSET = 70;
+
 
     public DeckGUI(Solitaire s) {
         super();
@@ -39,23 +42,23 @@ public class DeckGUI extends JPanel {
 
         //Print card backing
         printStackBacking(g2d, xPos, yPos + deltaY);
-        //drawCardFrame(g2d, Color.GREEN.darker().darker().darker().darker(), Color.BLACK, xPos, yPos + deltaY);
 
         for (Card c : cards) {
-            printCard(g2d, c, xPos, yPos, deltaY);
+            printCard(g2d, c, xPos, yPos + deltaY);
+            c.setBound(new Rectangle(xPos, yPos + deltaY, CARDWIDTH, CARDHEIGHT));
             deltaY += cardOFFSET;
         }
     }
 
     //EFFECTS: prints either faceUp or faceDown card
-    private void printCard(Graphics2D g2d, Card c, int xPos, int yPos, int deltaY) {
+    private void printCard(Graphics2D g2d, Card c, int xPos, int yPos) {
         Graphics2D cardGraphic = (Graphics2D) g2d.create();
         String cardText = getCardText(c);
         Color textColor = getColor(c);
         if (c.getFaceUp()) {
-            paintFaceUpCard(g2d, cardText, textColor, xPos, yPos + deltaY);
+            paintFaceUpCard(g2d, cardText, textColor, xPos, yPos);
         } else {
-            paintFaceDownCard(g2d, xPos, yPos + deltaY);
+            paintFaceDownCard(g2d, xPos, yPos);
 
         }
         cardGraphic.dispose();
@@ -117,6 +120,17 @@ public class DeckGUI extends JPanel {
         g2d.setClip(0, 0, bounds.width - xPad, bounds.height - yPad);
         g2d.setColor(textColor);
         g2d.drawString(text, 0, fm.getAscent());
+    }
+
+
+    //FIX THIS METHOD
+    public Card getCardAtPoint(Point point) {
+        for (Card c : solitaire.getActive().viewAllCards()) {
+            if (c.contains(point)) {
+                return c;
+            }
+        }
+        return null;
     }
 
 }

@@ -1,16 +1,28 @@
 package Model;
 
-public class Card {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class Card extends JPanel {
     private final int value;
     private final Suit suit;
     private boolean selected;
     private boolean isFaceUp;
+    private Rectangle bound;
+
+    private final int CARDWIDTH = 70;
+    private final int CARDHEIGHT = 100;
 
     public Card(int value, Suit suit, boolean isFaceUp) {
         this.value = value;
         this.suit = suit;
         this.selected = false;
         this.isFaceUp = isFaceUp;
+        this.bound = bound;
     }
 
     public String getValueString() {
@@ -57,6 +69,10 @@ public class Card {
         this.isFaceUp = false;
     }
 
+    public void setBound(Rectangle bound) {
+        this.bound = bound;
+    }
+
     //TODO: remove if unneeded
     public void flip() {
         this.isFaceUp = !this.isFaceUp;
@@ -83,4 +99,31 @@ public class Card {
     }
 
 
+    public void select(MouseEvent e) {
+        if (!this.selected) {
+            this.selected = true;
+        }
+    }
+
+    public void deSelect() {
+        if (this.selected) {
+            this.selected = false;
+        }
+    }
+
+    public boolean isSelected() {
+        return this.selected;
+    }
+
+
+
+
+
+    //FIX THESE METHODS
+    // EFFECTS: return true if the given Point (x,y) is contained within the bounds of this Shape
+    public boolean contains(Point point) {
+        //int point_x = point.x;
+        //int point_y = point.y;
+        return this.bound.contains(point);
+    }
 }
