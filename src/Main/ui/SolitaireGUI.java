@@ -64,13 +64,15 @@ public class SolitaireGUI extends JFrame {
     //REQUIRES: selected card must be faceUp
     //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
     private void handleMouseClick(MouseEvent e) {
-        Stack s = getDeckAtMouse(e.getPoint());
-        Card c = getCardAtMouse(e.getPoint());
+        Stack nextS = getDeckAtMouse(e.getPoint());
+        Card nextC = getCardAtMouse(e.getPoint());
 
         solitaire.deselectAll();
 
-        if (c != null) {
-            solitaire.setSelection(c, s);
+        if (nextC != null) {
+            solitaire.setSelection(nextC, nextS);
+        } else if (nextS != null && nextS.isEmpty()) {
+            solitaire.moveToBlank(nextS);
         }
 
         repaint();

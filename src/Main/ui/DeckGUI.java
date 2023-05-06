@@ -46,7 +46,7 @@ public class DeckGUI extends JPanel {
         Collection<Card> cards = stack.viewReverseCards();
         int deltaY = cardOFFSET;
 
-        //Print card backing
+        stack.setBound(new Rectangle(xPos, yPos + deltaY, CARDWIDTH, CARDHEIGHT));
         printStackBacking(g2d, xPos, yPos + deltaY);
 
         for (Card c : cards) {
@@ -136,6 +136,7 @@ public class DeckGUI extends JPanel {
     }
 
 
+
     //EFFECTS: returns card if point clicked contains one, null otherwise
     public Card getCardAtPoint(Point point) {
         for (Stack s : solitaire.getDecks()) {
@@ -151,13 +152,17 @@ public class DeckGUI extends JPanel {
     //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
     public Stack getStackAtPoint(Point point) {
         for (Stack s : solitaire.getDecks()) {
+            //Return stack if it has cards that contains point
             for (Card c : s.viewAllCards()) {
                 if (c.contains(point)) {
                     return s;
                 }
             }
+            //Return stack if it is empty and contains point
+            if (s.contains(point) && s.isEmpty()) {
+                return s;
+            }
         }
         return null;
     }
-
 }

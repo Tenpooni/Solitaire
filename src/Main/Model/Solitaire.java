@@ -8,7 +8,7 @@ public class Solitaire {
     //Full Deck to draw cards from
     private final ArrayList<Card> fullDeck = new ArrayList<>();
 
-    //List of Interactable decks
+    //List of Interactive decks
     private ArrayList<Stack> decks = new ArrayList<>();
 
     private Card prevC;
@@ -23,13 +23,13 @@ public class Solitaire {
     private final Stack s7;
 
     public Solitaire() {
-        this.s1 = new Stack("S1");
-        this.s2 = new Stack("S2");
-        this.s3 = new Stack("S3");
-        this.s4 = new Stack("S4");
-        this.s5 = new Stack("S5");
-        this.s6 = new Stack("S6");
-        this.s7 = new Stack("S7");
+        this.s1 = new Deck("S1", 1);
+        this.s2 = new Deck("S2", 1);
+        this.s3 = new Deck("S3", 1);
+        this.s4 = new Deck("S4", 1);
+        this.s5 = new Deck("S5", 1);
+        this.s6 = new Deck("S6", 1);
+        this.s7 = new Deck("S7", 1);
         makeDeck();
         initiateDeck();
     }
@@ -38,12 +38,15 @@ public class Solitaire {
         return decks;
     }
 
+    //EFFECTS: clears current selected card
     public void deselectAll() {
         if (this.prevC != null) {
             this.prevC.deSelect();
         }
     }
 
+    //EFFECTS: checks if current selection (Card) exists,
+    //if next selection is valid then move selected stack, otherwise set as next selection
     public void setSelection(Card nextC, Stack nextS) {
         if (this.prevC != null) {
             checkMoveCards(prevC, prevS, nextC, nextS);
@@ -53,28 +56,17 @@ public class Solitaire {
         this.prevS = nextS;
     }
 
+    //TODO: add restrictions to this method when moving new cards to blank, currently allows all faceUp stacks
+    public void moveToBlank(Stack nextS) {
+        ArrayList<Card> selectedStack = prevS.getSelectedStack(this.prevC);
+        prevS.removeCards(selectedStack, true);
+        nextS.addToFaceUpStack(selectedStack);
+    }
 
-//    //EFFECTS: sets given card as selected card
-//    public void setSelectionOld(Card nextC, Stack nextS) {
-//        //prevC = null
-//        if (this.prevC != null) {
-//            this.prevC.deSelect();
-//            //this.prevS = null;
-//        }
-//
-//        if (nextC != null) {
-//            if (prevC != null) {
-//                checkMoveCards(prevC, prevS, nextC, nextS);
-//            }
-//            nextC.select();
-//            this.prevC = nextC;
-//            this.prevS = nextS;
-//        }
-//    }
-
+    //REQUIRES: this.nextC != null, this.nextS != null,
     //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
     private void checkMoveCards(Card prev, Stack prevS, Card next, Stack nextS) {
-        if ((prev.getValue() + 1 == next.getValue()) && checkOppositeSuit(prev, next)) {
+        if ((prev.getCardValue() + 1 == next.getCardValue()) && checkOppositeSuit(prev, next)) {
             ArrayList<Card> selectedStack = prevS.getSelectedStack(prev);
             prevS.removeCards(selectedStack, true);
             nextS.addToFaceUpStack(selectedStack);

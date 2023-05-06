@@ -1,18 +1,39 @@
 package Model;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Stack {
+public abstract class Stack {
     private final String name;
+    private final int turnOver;
     private ArrayList<Card> faceUp;
     private ArrayList<Card> faceDown;
+    private Rectangle bound;
 
-    public Stack(String str) {
+    public Stack(String str, int turnOver) {
         this.name = str;
+        this.turnOver = turnOver;
         this.faceUp = new ArrayList<>();
         this.faceDown = new ArrayList<>();
+    }
+
+    //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
+    public void setBound(Rectangle bound) {
+        this.bound = bound;
+    }
+
+    // EFFECTS: return true if the given Point (x,y) is contained within the bounds of this Stack
+    public boolean contains(Point point) {
+        return this.bound.contains(point);
+    }
+
+    //TODO: Make abstract method, implement in inheritor?
+    //REQUIRES: this.faceUp != null, this.faceDown != null
+    //EFFECTS: return true if no faceUp or faceDown cards.
+    public boolean isEmpty() {
+        return (this.faceDown.size() == 0 && this.faceUp.size() == 0);
     }
 
     //EFFECTS: returns unmodifiable list of all cards in deck
@@ -83,6 +104,7 @@ public class Stack {
         return selectedCards;
     }
 
+
     //ONLY TO BE CALLED IF SELECTED STACK GETTING MOVED OUT IS VALID
     //EFFECTS: Called by getSelectedStack, removes selected cards from this deck
     public void removeCards(ArrayList<Card> cards, boolean faceUp) {
@@ -99,10 +121,12 @@ public class Stack {
 
     }
 
-    //EFFECTS:
+    ////TODO: Make abstract method, implement in inheritor?
+    //ONLY CALLED FOR FACEUP CARDS GETTING REMOVED
+    //EFFECTS: If there is no faceUp cards left, turn over
     private void turnOver() {
-        if (this.faceUp.size() == 0) {
-            flipUp(1);
+        if (this.faceUp.size() == 0 && this.faceDown.size() >= turnOver) {
+            flipUp(turnOver);
             organizeStack();
         }
     }

@@ -1,4 +1,5 @@
 import Model.Card;
+import Model.Deck;
 import Model.Stack;
 import Model.Suit;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestStack {
-    private Stack stack;
+    private Deck stack;
 
     private Card card9SpadeUp;
     private Card card10HeartDown;
@@ -22,7 +23,7 @@ public class TestStack {
 
     @BeforeEach
     public void runBefore() {
-        stack = new Stack("TestStack");
+        stack = new Deck("TestStack", 1);
         card9SpadeUp = new Card(9, Suit.SPADE, true);
         card10HeartDown = new Card(10, Suit.HEART, false);
         card11DiamondUp = new Card(11, Suit.DIAMOND, true);
@@ -106,31 +107,6 @@ public class TestStack {
         assertEquals(card2ClubUp, stack.viewAllCards().get(0));
         assertEquals(card12ClubDown, stack.viewAllCards().get(1));
     }
-
-//    @Test
-//    public void testFlipCards() {
-//        cardList.add(card1HeartUp);
-//        cardList.add(card2ClubUp);
-//
-//        stack.addCards(cardList);
-//
-//        //First affirm order
-//        assertEquals(card9SpadeUp, stack.viewAllCards().get(0));
-//        assertEquals(card11DiamondUp, stack.viewAllCards().get(1));
-//        assertEquals(card1HeartUp, stack.viewAllCards().get(2));
-//        assertEquals(card2ClubUp, stack.viewAllCards().get(3));
-//        assertEquals(card10HeartDown, stack.viewAllCards().get(4));
-//        assertEquals(card12ClubDown, stack.viewAllCards().get(5));
-//
-//        //12ClubDown is set to faceUp, should now move to position 4 and be faceUp
-//        ArrayList<Card> moveToFaceUp = new ArrayList<>();
-//        moveToFaceUp.add(card12ClubDown);
-//
-//        stack.flipCards(moveToFaceUp, true);
-//        assertEquals(card12ClubDown, stack.viewAllCards().get(4));
-//        assertTrue(card12ClubDown.getFaceUp());
-//        assertEquals(card10HeartDown, stack.viewAllCards().get(5));
-//    }
 
     @Test
     public void testFlipUp() {

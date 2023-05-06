@@ -2,10 +2,6 @@ package Model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class Card extends JPanel {
     private final int value;
@@ -21,12 +17,12 @@ public class Card extends JPanel {
         this.isFaceUp = isFaceUp;
     }
 
-    public int getValue() {
+    public int getCardValue() {
         return this.value;
     }
 
     public String getValueString() {
-        String str = "";
+        String str;
         if (this.value == 1) {
             str = "A";
         } else if (this.value == 11) {
@@ -80,7 +76,7 @@ public class Card extends JPanel {
     }
 
     private String stringConversion() {
-        String str = "";
+        String str;
         if (this.value == 1) {
             str = "Ace";
         } else if (this.value == 11) {
