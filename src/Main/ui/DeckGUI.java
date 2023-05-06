@@ -20,9 +20,6 @@ public class DeckGUI extends JPanel {
     private final int stackOFFSET = 35;
 
 
-    private BasicStroke defaultLine = new BasicStroke(1);
-
-
     public DeckGUI(Solitaire s) {
         super();
         this.solitaire = s;
@@ -39,7 +36,7 @@ public class DeckGUI extends JPanel {
 
         int deltaX = 0;
         for (Stack s : decks) {
-            printStack(g2d, s, stackOFFSET + deltaX, 150);
+            printStack(g2d, s, stackOFFSET + deltaX, 100);
             deltaX += (stackOFFSET + CARDWIDTH);
         }
     }
@@ -145,6 +142,18 @@ public class DeckGUI extends JPanel {
             for (Card c : s.viewAllCards()) {
                 if (c.contains(point)) {
                     return c;
+                }
+            }
+        }
+        return null;
+    }
+
+    //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
+    public Stack getStackAtPoint(Point point) {
+        for (Stack s : solitaire.getDecks()) {
+            for (Card c : s.viewAllCards()) {
+                if (c.contains(point)) {
+                    return s;
                 }
             }
         }

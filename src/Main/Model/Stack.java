@@ -56,7 +56,6 @@ public class Stack {
                 this.faceDown.add(card);
             }
         }
-
         addToFaceUpStack(faceUps);
     }
 
@@ -90,15 +89,25 @@ public class Stack {
         if (faceUp) {
             for (Card c : cards) {
                 this.faceUp.remove(c);
+                turnOver();
             }
         } else {
             for (Card c : cards) {
                 this.faceDown.remove(c);
             }
         }
+
     }
 
-    //EFFECTS: flips i amount of lowest index faceDown Cards into faceUp, maintains order.
+    //EFFECTS:
+    private void turnOver() {
+        if (this.faceUp.size() == 0) {
+            flipUp(1);
+            organizeStack();
+        }
+    }
+
+    //EFFECTS: flips i amount of faceDown Cards into faceUp starting from lowest index, maintains order.
     public void flipUp(int i) {
         int numFaceDown = this.faceDown.size();
         int toFlip = Math.min(i, numFaceDown);

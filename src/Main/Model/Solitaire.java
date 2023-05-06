@@ -7,8 +7,12 @@ public class Solitaire {
 
     //Full Deck to draw cards from
     private final ArrayList<Card> fullDeck = new ArrayList<>();
+
     //List of Interactable decks
     private ArrayList<Stack> decks = new ArrayList<>();
+
+    private Card prevC;
+    private Stack prevS;
 
     private final Stack s1;
     private final Stack s2;
@@ -32,6 +36,58 @@ public class Solitaire {
 
     public ArrayList<Stack> getDecks() {
         return decks;
+    }
+
+    public void deselectAll() {
+        if (this.prevC != null) {
+            this.prevC.deSelect();
+        }
+    }
+
+    public void setSelection(Card nextC, Stack nextS) {
+        if (this.prevC != null) {
+            checkMoveCards(prevC, prevS, nextC, nextS);
+        }
+        nextC.select();
+        this.prevC = nextC;
+        this.prevS = nextS;
+    }
+
+
+//    //EFFECTS: sets given card as selected card
+//    public void setSelectionOld(Card nextC, Stack nextS) {
+//        //prevC = null
+//        if (this.prevC != null) {
+//            this.prevC.deSelect();
+//            //this.prevS = null;
+//        }
+//
+//        if (nextC != null) {
+//            if (prevC != null) {
+//                checkMoveCards(prevC, prevS, nextC, nextS);
+//            }
+//            nextC.select();
+//            this.prevC = nextC;
+//            this.prevS = nextS;
+//        }
+//    }
+
+    //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
+    private void checkMoveCards(Card prev, Stack prevS, Card next, Stack nextS) {
+        if ((prev.getValue() + 1 == next.getValue()) && checkOppositeSuit(prev, next)) {
+            ArrayList<Card> selectedStack = prevS.getSelectedStack(prev);
+            prevS.removeCards(selectedStack, true);
+            nextS.addToFaceUpStack(selectedStack);
+        }
+    }
+
+    //EFFECTS: verifies suits of two cards are opposite
+    private boolean checkOppositeSuit(Card c1, Card c2) {
+        boolean c1Red = (c1.getSuit() == Suit.DIAMOND || c1.getSuit() == Suit.HEART) &&
+                (c2.getSuit() == Suit.CLUB || c2.getSuit() == Suit.SPADE);
+        boolean c1Black = (c2.getSuit() == Suit.DIAMOND || c2.getSuit() == Suit.HEART) &&
+                (c1.getSuit() == Suit.CLUB || c1.getSuit() == Suit.SPADE);
+        return (c1Red || c1Black);
     }
 
     //EFFECTS: Initiate 52 cards in starting deck

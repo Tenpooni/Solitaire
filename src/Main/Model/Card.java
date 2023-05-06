@@ -21,6 +21,10 @@ public class Card extends JPanel {
         this.isFaceUp = isFaceUp;
     }
 
+    public int getValue() {
+        return this.value;
+    }
+
     public String getValueString() {
         String str = "";
         if (this.value == 1) {

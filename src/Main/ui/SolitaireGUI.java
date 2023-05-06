@@ -2,6 +2,7 @@ package ui;
 
 import Model.Card;
 import Model.Solitaire;
+import Model.Stack;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,8 +31,8 @@ public class SolitaireGUI extends JFrame {
     }
 
     private void centreOnScreen() {
-        Dimension scrn = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((scrn.width - getWidth()) / 2, (scrn.height - getHeight()) / 2);
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screen.width - getWidth()) / 2, (screen.height - getHeight()) / 2);
     }
 
     // EFFECTS:  initializes a MouseListener to be used in the JFrame
@@ -60,29 +61,22 @@ public class SolitaireGUI extends JFrame {
     }
 
 
-
-
     //REQUIRES: selected card must be faceUp
     //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
-    //TODO: CHANGE METHODS FOR CLICK OTHER DECK INTERACTIONS
     private void handleMouseClick(MouseEvent e) {
+        Stack s = getDeckAtMouse(e.getPoint());
         Card c = getCardAtMouse(e.getPoint());
 
+        solitaire.deselectAll();
+
         if (c != null) {
-            if (selection != null) {
-                selection.deSelect();
-            }
-            selection = c;
-            selection.select();
-        } else {
-            if (selection != null) {
-                selection.deSelect();
-            }
+            solitaire.setSelection(c, s);
         }
+
         repaint();
     }
 
-
+    //MouseAdapter class
     private class Click extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             handleMouseClick(translateEvent(e));
@@ -95,6 +89,10 @@ public class SolitaireGUI extends JFrame {
 
     public Card getCardAtMouse(Point point) {
         return currentDeckGUI.getCardAtPoint(point);
+    }
+
+    public Stack getDeckAtMouse(Point point) {
+        return currentDeckGUI.getStackAtPoint(point);
     }
 
 }
