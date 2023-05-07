@@ -14,8 +14,6 @@ public class SolitaireGUI extends JFrame {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
 
-    private Card selection;
-
     private DeckGUI currentDeckGUI;
     private Solitaire solitaire;
 
@@ -61,6 +59,7 @@ public class SolitaireGUI extends JFrame {
     }
 
 
+    //TODO: waste deck is clearing out card but still saving stack?
     //REQUIRES: selected card must be faceUp
     //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
     private void handleMouseClick(MouseEvent e) {

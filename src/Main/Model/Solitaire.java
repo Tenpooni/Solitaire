@@ -22,6 +22,9 @@ public class Solitaire {
     private final Stack s6;
     private final Stack s7;
 
+    //TODO: FIX WASTE
+    private final Stack waste;
+
     public Solitaire() {
         this.s1 = new Deck("S1", 1);
         this.s2 = new Deck("S2", 1);
@@ -30,12 +33,25 @@ public class Solitaire {
         this.s5 = new Deck("S5", 1);
         this.s6 = new Deck("S6", 1);
         this.s7 = new Deck("S7", 1);
+        this.waste = new Deck("Waste", 3);
+
         makeDeck();
         initiateDeck();
+        System.out.println(fullDeck.size());
     }
 
-    public ArrayList<Stack> getDecks() {
+    public ArrayList<Stack> getAllDecks() {
+        ArrayList<Stack> allDeck = new ArrayList<>(decks);
+        allDeck.add(this.waste);
+        return allDeck;
+    }
+
+    public ArrayList<Stack> getPlayingDecks() {
         return decks;
+    }
+
+    public Stack getWasteDeck() {
+        return waste;
     }
 
     //EFFECTS: clears current selected card
@@ -66,7 +82,13 @@ public class Solitaire {
     //REQUIRES: this.nextC != null, this.nextS != null,
     //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
     private void checkMoveCards(Card prev, Stack prevS, Card next, Stack nextS) {
-        if ((prev.getCardValue() + 1 == next.getCardValue()) && checkOppositeSuit(prev, next)) {
+        ArrayList<Card> nextStack = nextS.getSelectedStack(next);
+
+        //3 conditions: prev is opposite suite, 1 value higher, and next card is index (0) of its stack.
+        if ((prev.getCardValue() + 1 == next.getCardValue()) &&
+                (nextStack.indexOf(next) == 0) &&
+                checkOppositeSuit(prev, next)) {
+
             ArrayList<Card> selectedStack = prevS.getSelectedStack(prev);
             prevS.removeCards(selectedStack, true);
             nextS.addToFaceUpStack(selectedStack);
@@ -100,6 +122,8 @@ public class Solitaire {
         shuffle(s5, 4, 1);
         shuffle(s6, 5, 1);
         shuffle(s7, 6, 1);
+
+        shuffle(waste, 21, 3);
 
         decks.add(s1);
         decks.add(s2);
@@ -137,11 +161,10 @@ public class Solitaire {
         ArrayList<Card> cards = new ArrayList<>();
 
         for (int i = 0; i < amount; i++) {
-            Card card = fullDeck.get(i);
+            Card card = fullDeck.get(0);
             fullDeck.remove(card);
             cards.add(card);
         }
-
         return cards;
     }
 }

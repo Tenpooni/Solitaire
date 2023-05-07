@@ -36,6 +36,7 @@ public abstract class Stack {
         return (this.faceDown.size() == 0 && this.faceUp.size() == 0);
     }
 
+    //TODO: MADE JUST FOR TEST??
     //EFFECTS: returns unmodifiable list of all cards in deck
     public List<Card> viewAllCards() {
         ArrayList<Card> cards = new ArrayList<>();
@@ -44,11 +45,18 @@ public abstract class Stack {
         return Collections.unmodifiableList(cards);
     }
 
+    //EFFECTS: returns unmodifiable list of all active cards
+    public List<Card> viewFaceUpCards() {
+        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
+        return Collections.unmodifiableList(cards);
+    }
+
     //TODO: GUI prints in reverse order, fix this method?
-    public List<Card> viewReverseCards() {
-        ArrayList<Card> cards = new ArrayList<>();
-        cards.addAll(this.faceUp);
-        cards.addAll(this.faceDown);
+    public List<Card> viewReverseCards(boolean faceDown) {
+        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
+        if (faceDown) {
+            cards.addAll(this.faceDown);
+        }
         Collections.reverse(cards);
         return Collections.unmodifiableList(cards);
     }
