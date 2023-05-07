@@ -1,21 +1,20 @@
 package Model;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Stack extends Deck{
 //    private final String name;
-//    private final int turnOver;
+      private final int flipOver = 1;
 //    private ArrayList<Card> faceUp;
 //    private ArrayList<Card> faceDown;
 //    private Rectangle bound;
 
-    public Stack(String str, int turnOver) {
+    public Stack(String str) {
 //        this.name = str;
 //        this.turnOver = turnOver;
-        super(str, turnOver);
+        super(str);
 //        this.faceUp = new ArrayList<>();
 //        this.faceDown = new ArrayList<>();
     }
@@ -76,7 +75,7 @@ public class Stack extends Deck{
     }
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
-    //EFFECTS: selected cards put in new list while still maintaining order
+    //EFFECTS: selected cards from own faceUp list put in new list for holding while still maintaining order
     @Override
     public ArrayList<Card> getSelected(Card c) {
 
@@ -116,8 +115,8 @@ public class Stack extends Deck{
     //EFFECTS: If there is no faceUp cards left, turn over
     @Override
     protected void turnOver() {
-        if (this.faceUp.size() == 0 && this.faceDown.size() >= this.turnOver) {
-            flipUp(turnOver);
+        if (this.faceUp.size() == 0 && this.faceDown.size() >= this.flipOver) {
+            flipUp(flipOver);
             organizeStack();
         }
     }
@@ -154,7 +153,7 @@ public class Stack extends Deck{
         }
     }
 
-//    //TODO: CURRENTLY ONLY USED IN TESTS, COMMENTED OUT, MOVE TO OTHER CLASS IN FUTURE
+//    //TODO: CURRENTLY ONLY USED IN TESTS, COMMENTED OUT, MOVE TO WASTE CLASS IN FUTURE
 //    //EFFECTS: flips all cards from faceUp to faceDown and puts them at back of faceDown stack
 //    public void flipDown() {
 //        ArrayList<Card> cardsToFlip = new ArrayList<>(this.faceUp);

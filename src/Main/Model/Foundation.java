@@ -5,14 +5,15 @@ import java.util.Collections;
 
 public class Foundation extends Deck{
 
-    public Foundation(String str, int turnOver) {
-        super(str, turnOver);
+    public Foundation(String str) {
+        super(str);
     }
 
     @Override
     protected void removeCards(ArrayList<Card> cards, boolean faceUp) {
         Card c = cards.get(0);
         this.faceUp.remove(c);
+        turnOver();
     }
 
     //EFFECTS:
@@ -38,9 +39,13 @@ public class Foundation extends Deck{
         addCards(cardsToFlip);
     }
 
-    //EFFECTS: Adding new card always puts it at front of the faceUp list
+    //EFFECTS: Adding new card always puts it at front of the faceUp list, remove old card and move to front of faceDown list
     @Override
     public void addCards(ArrayList<Card> cards) {
+        Card toFaceDown = this.faceUp.get(0);
+        this.faceDown.add(0, toFaceDown);
+        this.faceUp.clear();
+
         Card c = cards.get(0);
         this.faceUp.add(0, c);
     }
@@ -55,15 +60,20 @@ public class Foundation extends Deck{
         }
     }
 
+    //TODO: Duplicated method from addCards, to fix
     @Override
     public void addToFaceUpStack(ArrayList<Card> selected) {
-        Card c = selected.get(0);
-        this.faceUp.add(0, c);
+//        Card toFaceDown = this.faceUp.get(0);
+//        this.faceDown.add(0, toFaceDown);
+//        this.faceUp.clear();
 
+        Card c = selected.get(0);
+        System.out.println(c);
+        this.faceUp.add(0, c);
     }
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
-    //EFFECTS: selected cards put in new list while still maintaining order
+    //EFFECTS: gives selected card from own faceUp list
     @Override
     public ArrayList<Card> getSelected(Card c) {
         ArrayList<Card> selectedCards = new ArrayList<>();

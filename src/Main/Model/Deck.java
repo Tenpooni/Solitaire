@@ -7,16 +7,16 @@ import java.util.List;
 
 public abstract class Deck{
     protected final String name;
-    protected final int turnOver;
+    //protected final int turnOver;
     protected ArrayList<Card> faceUp;
     protected ArrayList<Card> faceDown;
     protected Rectangle bound;
 
-    public Deck(String str, int turnOver) {
+    public Deck(String str) {
         this.name = str;
-        this.turnOver = turnOver;
-        this.faceUp = new ArrayList<>();
-        this.faceDown = new ArrayList<>();
+        //this.turnOver = turnOver;
+        this.faceUp = new ArrayList<>(0);
+        this.faceDown = new ArrayList<>(0);
     }
 
 

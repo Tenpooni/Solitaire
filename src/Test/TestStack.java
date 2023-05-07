@@ -23,7 +23,7 @@ public class TestStack {
 
     @BeforeEach
     public void runBefore() {
-        stack = new Stack("TestStack", 1);
+        stack = new Stack("TestStack");
         card9SpadeUp = new Card(9, Suit.SPADE, true);
         card10HeartDown = new Card(10, Suit.HEART, false);
         card11DiamondUp = new Card(11, Suit.DIAMOND, true);

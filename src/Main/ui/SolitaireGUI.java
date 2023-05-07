@@ -60,7 +60,7 @@ public class SolitaireGUI extends JFrame {
     }
 
 
-    //TODO: waste deck is clearing out card but still saving stack?
+    //TODO: Add foundation deck handling to mouseclick event
     //REQUIRES: selected card must be faceUp
     //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
     private void handleMouseClick(MouseEvent e) {
@@ -68,14 +68,16 @@ public class SolitaireGUI extends JFrame {
         Deck nextS = getDeckAtMouse(e.getPoint());
         Card nextC = getCardAtMouse(e.getPoint());
 
-        solitaire.deselectAll();
+        //solitaire.deselectAll();
+        if (nextC == null) {
+            solitaire.deselectAll();
+        }
 
         if (nextC != null) {
             solitaire.setSelection(nextC, nextS);
         } else if (nextS != null && nextS.isEmpty()) {
-            solitaire.moveToBlank(nextS);
+            solitaire.checkMoveToBlank(nextS);
         }
-
         repaint();
     }
 

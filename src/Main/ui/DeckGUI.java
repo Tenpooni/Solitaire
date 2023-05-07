@@ -30,14 +30,34 @@ public class DeckGUI extends JPanel {
         //TODO: FIX WASTE STACK
         printWasteStack(g2d, solitaire.getWasteDeck(), stackOFFSET, 10);
 
-        int deltaX = 0;
+        int stackDeltaX = 0;
         for (Stack s : solitaire.getPlayingDecks()) {
-            printStack(g2d, s, stackOFFSET + deltaX, 100);
-            deltaX += (stackOFFSET + CARDWIDTH);
+            printStack(g2d, s, stackOFFSET + stackDeltaX, 100);
+            stackDeltaX += (stackOFFSET + CARDWIDTH);
+        }
+
+        int foundationDeltaX = 0;
+        for (Foundation f : solitaire.getFoundationDecks()) {
+            printFoundation(g2d, f, stackOFFSET * 10 + foundationDeltaX, 10);
+            foundationDeltaX += (stackOFFSET + CARDWIDTH);
         }
     }
 
-    //TODO:fix waste deck GUI, PRINTING ONLY FACEUPS BREAKS SELECT?
+    //TODO: Make these GUI methods better
+    private void printFoundation(Graphics2D g2d, Foundation foundation, int xPos, int yPos) {
+        foundation.setBound(new Rectangle(xPos, yPos, CARDWIDTH, CARDHEIGHT));
+
+        printStackBacking(g2d, xPos, yPos);
+
+        if (!foundation.isEmpty()) {
+            Card topCard = foundation.viewFaceUpCards().get(0);
+            String cardText = getCardText(topCard);
+            Color textColor = getColor(topCard);
+            paintFaceUpCard(g2d, cardText, textColor, xPos, yPos, topCard.isSelected());
+        }
+    }
+
+    //TODO:fix waste deck GUI, make waste class instead of using Stack
     private void printWasteStack(Graphics2D g2d, Stack stack, int xPos, int yPos) {
         Collection<Card> cards = stack.viewReverseCards(false);
         int deltaX = 0;
@@ -161,6 +181,7 @@ public class DeckGUI extends JPanel {
         return null;
     }
 
+    //TODO: NOT BEING USED, TO DELETE?
     //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
     public Stack getStackAtPoint(Point point) {
         for (Stack s : solitaire.getAllStacks()) {
@@ -178,7 +199,6 @@ public class DeckGUI extends JPanel {
         return null;
     }
 
-    //TODO: TEST METHOD USING ABSTRACT DECK
     public Deck getDeckAtPoint(Point p) {
         for (Deck d : solitaire.getAllDecks()) {
 
