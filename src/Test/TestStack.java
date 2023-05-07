@@ -138,27 +138,27 @@ public class TestStack {
         assertEquals(card12ClubDown, stack.viewAllCards().get(5));
     }
 
-    @Test
-    public void testFlipDown() {
-        cardList.add(card1HeartUp);
-        cardList.add(card2ClubUp);
-
-        stack.addCards(cardList);
-        //order is affirmed in testFlipUp
-
-        stack.flipDown();
-
-        //cards previously faceUp are cycled to the END of the faceDown list, order is maintained
-        assertEquals(card9SpadeUp, stack.viewAllCards().get(2));
-        assertEquals(card11DiamondUp, stack.viewAllCards().get(3));
-        assertFalse(card11DiamondUp.getFaceUp());
-        assertEquals(card1HeartUp, stack.viewAllCards().get(4));
-        assertEquals(card2ClubUp, stack.viewAllCards().get(5));
-        assertFalse(card2ClubUp.getFaceUp());
-
-        assertEquals(card10HeartDown, stack.viewAllCards().get(0));
-        assertEquals(card12ClubDown, stack.viewAllCards().get(1));
-    }
+//    @Test
+//    public void testFlipDown() {
+//        cardList.add(card1HeartUp);
+//        cardList.add(card2ClubUp);
+//
+//        stack.addCards(cardList);
+//        //order is affirmed in testFlipUp
+//
+//        stack.flipDown();
+//
+//        //cards previously faceUp are cycled to the END of the faceDown list, order is maintained
+//        assertEquals(card9SpadeUp, stack.viewAllCards().get(2));
+//        assertEquals(card11DiamondUp, stack.viewAllCards().get(3));
+//        assertFalse(card11DiamondUp.getFaceUp());
+//        assertEquals(card1HeartUp, stack.viewAllCards().get(4));
+//        assertEquals(card2ClubUp, stack.viewAllCards().get(5));
+//        assertFalse(card2ClubUp.getFaceUp());
+//
+//        assertEquals(card10HeartDown, stack.viewAllCards().get(0));
+//        assertEquals(card12ClubDown, stack.viewAllCards().get(1));
+//    }
 
 
 

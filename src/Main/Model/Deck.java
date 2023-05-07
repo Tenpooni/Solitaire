@@ -2,6 +2,7 @@ package Model;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public abstract class Deck{
     protected final String name;
@@ -17,17 +18,31 @@ public abstract class Deck{
         this.faceDown = new ArrayList<>();
     }
 
+    protected abstract void removeCards(ArrayList<Card> cards, boolean faceUp);
 
-//    @Override
-//    public ArrayList<Card> getSelected(Card c) {
-//
-//        int i = this.faceUp.indexOf(c);
-//        ArrayList<Card> selectedCards = new ArrayList<>();
-//
-//        for(int j = 0; j <= i; j++) {
-//            selectedCards.add(this.faceUp.get(j));
-//        }
-//
-//        return selectedCards;
-//    }
+    protected abstract void turnOver();
+
+    protected abstract void flipUp(int i);
+
+    //REQUIRES: cardsToFlip cards are present in stack
+    protected abstract void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp);
+
+    protected abstract void addCards(ArrayList<Card> cards);
+
+    //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
+    public void setBound(Rectangle bound) {
+        this.bound = bound;
+    }
+
+    // EFFECTS: return true if the given Point (x,y) is contained within the bounds of this Stack
+    public boolean contains(Point point) {
+        return this.bound.contains(point);
+    }
+
+    //REQUIRES: this.faceUp != null, this.faceDown != null
+    //EFFECTS: return true if no faceUp or faceDown cards.
+    public boolean isEmpty() {
+        return (this.faceDown.size() == 0 && this.faceUp.size() == 0);
+    }
+
 }

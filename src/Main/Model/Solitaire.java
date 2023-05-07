@@ -104,6 +104,19 @@ public class Solitaire {
         return (c1Red || c1Black);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     //EFFECTS: Initiate 52 cards in starting deck
     private void makeDeck() {
         for (Suit suit : Suit.values()) {
