@@ -32,6 +32,10 @@ public abstract class Deck{
 
     protected abstract void addCards(ArrayList<Card> cards);
 
+    protected abstract ArrayList<Card> getSelected(Card c);
+
+    protected abstract void addToFaceUpStack(ArrayList<Card> selected);
+
     //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
     public void setBound(Rectangle bound) {
         this.bound = bound;

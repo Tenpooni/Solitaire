@@ -65,6 +65,7 @@ public class Stack extends Deck{
     }
 
     //EFFECTS: selected cards STAY IN ORDER and are appended at index 0 of this deck
+    @Override
     public void addToFaceUpStack(ArrayList<Card> selected) {
 
         Collections.reverse(selected);
@@ -76,6 +77,7 @@ public class Stack extends Deck{
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
     //EFFECTS: selected cards put in new list while still maintaining order
+    @Override
     public ArrayList<Card> getSelected(Card c) {
 
         int i = this.faceUp.indexOf(c);

@@ -12,7 +12,7 @@ public class Solitaire {
     private ArrayList<Stack> decks = new ArrayList<>();
 
     private Card prevC;
-    private Stack prevS;
+    private Deck prevS;
 
     private final Stack s1;
     private final Stack s2;
@@ -79,7 +79,7 @@ public class Solitaire {
 
     //EFFECTS: checks if current selection (Card) exists,
     //if next selection is valid then move selected stack, otherwise set as next selection
-    public void setSelection(Card nextC, Stack nextS) {
+    public void setSelection(Card nextC, Deck nextS) {
         if (this.prevC != null) {
             checkMoveCards(prevC, prevS, nextC, nextS);
         }
@@ -89,7 +89,7 @@ public class Solitaire {
     }
 
     //TODO: add restrictions to this method when moving new cards to blank, currently allows all faceUp stacks
-    public void moveToBlank(Stack nextS) {
+    public void moveToBlank(Deck nextS) {
         ArrayList<Card> selectedStack = prevS.getSelected(this.prevC);
         prevS.removeCards(selectedStack, true);
         nextS.addToFaceUpStack(selectedStack);
@@ -97,7 +97,7 @@ public class Solitaire {
 
     //REQUIRES: this.nextC != null, this.nextS != null,
     //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
-    private void checkMoveCards(Card prev, Stack prevS, Card next, Stack nextS) {
+    private void checkMoveCards(Card prev, Deck prevS, Card next, Deck nextS) {
         ArrayList<Card> nextStack = nextS.getSelected(next);
 
         //3 conditions: prev is opposite suite, 1 value higher, and next card is index (0) of its stack.

@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Foundation extends Deck{
 
@@ -52,5 +53,23 @@ public class Foundation extends Deck{
         } else {
             c.setFaceDown();
         }
+    }
+
+    @Override
+    public void addToFaceUpStack(ArrayList<Card> selected) {
+        Card c = selected.get(0);
+        this.faceUp.add(0, c);
+
+    }
+
+    //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
+    //EFFECTS: selected cards put in new list while still maintaining order
+    @Override
+    public ArrayList<Card> getSelected(Card c) {
+        ArrayList<Card> selectedCards = new ArrayList<>();
+        if (this.faceUp.indexOf(c) == 0) {
+            selectedCards.add(c);
+        }
+        return selectedCards;
     }
 }
