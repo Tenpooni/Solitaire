@@ -26,14 +26,14 @@ public class Solitaire {
     private final Stack waste;
 
     public Solitaire() {
-        this.s1 = new Deck("S1", 1);
-        this.s2 = new Deck("S2", 1);
-        this.s3 = new Deck("S3", 1);
-        this.s4 = new Deck("S4", 1);
-        this.s5 = new Deck("S5", 1);
-        this.s6 = new Deck("S6", 1);
-        this.s7 = new Deck("S7", 1);
-        this.waste = new Deck("Waste", 3);
+        this.s1 = new Stack("S1", 1);
+        this.s2 = new Stack("S2", 1);
+        this.s3 = new Stack("S3", 1);
+        this.s4 = new Stack("S4", 1);
+        this.s5 = new Stack("S5", 1);
+        this.s6 = new Stack("S6", 1);
+        this.s7 = new Stack("S7", 1);
+        this.waste = new Stack("Waste", 3);
 
         makeDeck();
         initiateDeck();
@@ -74,7 +74,7 @@ public class Solitaire {
 
     //TODO: add restrictions to this method when moving new cards to blank, currently allows all faceUp stacks
     public void moveToBlank(Stack nextS) {
-        ArrayList<Card> selectedStack = prevS.getSelectedStack(this.prevC);
+        ArrayList<Card> selectedStack = prevS.getSelected(this.prevC);
         prevS.removeCards(selectedStack, true);
         nextS.addToFaceUpStack(selectedStack);
     }
@@ -82,14 +82,14 @@ public class Solitaire {
     //REQUIRES: this.nextC != null, this.nextS != null,
     //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
     private void checkMoveCards(Card prev, Stack prevS, Card next, Stack nextS) {
-        ArrayList<Card> nextStack = nextS.getSelectedStack(next);
+        ArrayList<Card> nextStack = nextS.getSelected(next);
 
         //3 conditions: prev is opposite suite, 1 value higher, and next card is index (0) of its stack.
         if ((prev.getCardValue() + 1 == next.getCardValue()) &&
                 (nextStack.indexOf(next) == 0) &&
                 checkOppositeSuit(prev, next)) {
 
-            ArrayList<Card> selectedStack = prevS.getSelectedStack(prev);
+            ArrayList<Card> selectedStack = prevS.getSelected(prev);
             prevS.removeCards(selectedStack, true);
             nextS.addToFaceUpStack(selectedStack);
         }

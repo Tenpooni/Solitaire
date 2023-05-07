@@ -5,18 +5,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Stack {
-    private final String name;
-    private final int turnOver;
-    private ArrayList<Card> faceUp;
-    private ArrayList<Card> faceDown;
-    private Rectangle bound;
+public class Stack extends Deck{
+//    private final String name;
+//    private final int turnOver;
+//    private ArrayList<Card> faceUp;
+//    private ArrayList<Card> faceDown;
+//    private Rectangle bound;
 
     public Stack(String str, int turnOver) {
-        this.name = str;
-        this.turnOver = turnOver;
-        this.faceUp = new ArrayList<>();
-        this.faceDown = new ArrayList<>();
+//        this.name = str;
+//        this.turnOver = turnOver;
+        super(str, turnOver);
+//        this.faceUp = new ArrayList<>();
+//        this.faceDown = new ArrayList<>();
     }
 
     //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
@@ -100,7 +101,7 @@ public abstract class Stack {
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
     //EFFECTS: selected cards put in new list while still maintaining order
-    public ArrayList<Card> getSelectedStack(Card c) {
+    public ArrayList<Card> getSelected(Card c) {
 
         int i = this.faceUp.indexOf(c);
         ArrayList<Card> selectedCards = new ArrayList<>();
@@ -133,7 +134,7 @@ public abstract class Stack {
     //ONLY CALLED FOR FACEUP CARDS GETTING REMOVED
     //EFFECTS: If there is no faceUp cards left, turn over
     private void turnOver() {
-        if (this.faceUp.size() == 0 && this.faceDown.size() >= turnOver) {
+        if (this.faceUp.size() == 0 && this.faceDown.size() >= this.turnOver) {
             flipUp(turnOver);
             organizeStack();
         }
