@@ -37,14 +37,21 @@ public class Solitaire {
 
         makeDeck();
         initiateDeck();
-        System.out.println(fullDeck.size());
     }
 
-    public ArrayList<Stack> getAllDecks() {
+    public ArrayList<Stack> getAllStacks() {
         ArrayList<Stack> allDeck = new ArrayList<>(decks);
         allDeck.add(this.waste);
         return allDeck;
     }
+
+    //TODO: TEST METHOD
+    public ArrayList<Deck> getAllDecks() {
+        ArrayList<Deck> allDeck = new ArrayList<>(decks);
+        allDeck.add(this.waste);
+        return allDeck;
+    }
+
 
     public ArrayList<Stack> getPlayingDecks() {
         return decks;
@@ -53,6 +60,15 @@ public class Solitaire {
     public Stack getWasteDeck() {
         return waste;
     }
+
+
+
+
+
+
+
+
+
 
     //EFFECTS: clears current selected card
     public void deselectAll() {

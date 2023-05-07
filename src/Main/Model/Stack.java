@@ -20,11 +20,11 @@ public class Stack extends Deck{
 //        this.faceDown = new ArrayList<>();
     }
 
-    //EFFECTS: returns unmodifiable list of all active cards
-    public List<Card> viewFaceUpCards() {
-        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
-        return Collections.unmodifiableList(cards);
-    }
+//    //EFFECTS: returns unmodifiable list of all active cards
+//    public List<Card> viewFaceUpCards() {
+//        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
+//        return Collections.unmodifiableList(cards);
+//    }
 
     //TODO: GUI prints in reverse order, fix this method?
     public List<Card> viewReverseCards(boolean faceDown) {

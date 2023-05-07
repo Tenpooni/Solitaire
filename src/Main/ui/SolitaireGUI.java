@@ -1,6 +1,7 @@
 package ui;
 
 import Model.Card;
+import Model.Deck;
 import Model.Solitaire;
 import Model.Stack;
 
@@ -63,7 +64,7 @@ public class SolitaireGUI extends JFrame {
     //REQUIRES: selected card must be faceUp
     //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
     private void handleMouseClick(MouseEvent e) {
-        Stack nextS = getDeckAtMouse(e.getPoint());
+        Stack nextS = getStackAtMouse(e.getPoint());
         Card nextC = getCardAtMouse(e.getPoint());
 
         solitaire.deselectAll();
@@ -92,8 +93,13 @@ public class SolitaireGUI extends JFrame {
         return currentDeckGUI.getCardAtPoint(point);
     }
 
-    public Stack getDeckAtMouse(Point point) {
+    public Stack getStackAtMouse(Point point) {
         return currentDeckGUI.getStackAtPoint(point);
+    }
+
+    //TODO: TEST METHOD WITH ABSTRACT DECK
+    public Deck getDeckAtMouse(Point p) {
+        return currentDeckGUI.getDeckAtPoint(p);
     }
 
 }

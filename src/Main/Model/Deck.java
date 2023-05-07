@@ -3,6 +3,7 @@ package Model;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public abstract class Deck{
     protected final String name;
@@ -17,6 +18,8 @@ public abstract class Deck{
         this.faceUp = new ArrayList<>();
         this.faceDown = new ArrayList<>();
     }
+
+
 
     protected abstract void removeCards(ArrayList<Card> cards, boolean faceUp);
 
@@ -43,6 +46,12 @@ public abstract class Deck{
     //EFFECTS: return true if no faceUp or faceDown cards.
     public boolean isEmpty() {
         return (this.faceDown.size() == 0 && this.faceUp.size() == 0);
+    }
+
+    //EFFECTS: returns unmodifiable list of all active cards
+    public List<Card> viewFaceUpCards() {
+        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
+        return Collections.unmodifiableList(cards);
     }
 
 }

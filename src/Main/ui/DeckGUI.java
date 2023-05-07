@@ -1,9 +1,6 @@
 package ui;
 
-import Model.Card;
-import Model.Solitaire;
-import Model.Stack;
-import Model.Suit;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -154,7 +151,7 @@ public class DeckGUI extends JPanel {
 
     //EFFECTS: returns card if point clicked contains one, null otherwise
     public Card getCardAtPoint(Point point) {
-        for (Stack s : solitaire.getAllDecks()) {
+        for (Stack s : solitaire.getAllStacks()) {
             for (Card c : s.viewFaceUpCards()) {
                 if (c.contains(point)) {
                     return c;
@@ -166,7 +163,7 @@ public class DeckGUI extends JPanel {
 
     //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
     public Stack getStackAtPoint(Point point) {
-        for (Stack s : solitaire.getAllDecks()) {
+        for (Stack s : solitaire.getAllStacks()) {
             //Return stack if it has cards that contain point
             for (Card c : s.viewFaceUpCards()) {
                 if (c.contains(point)) {
@@ -176,6 +173,23 @@ public class DeckGUI extends JPanel {
             //Return stack if it is empty and contains point
             if (s.contains(point) && s.isEmpty()) {
                 return s;
+            }
+        }
+        return null;
+    }
+
+    //TODO: TEST METHOD USING ABSTRACT DECK
+    public Deck getDeckAtPoint(Point p) {
+        for (Deck d : solitaire.getAllDecks()) {
+
+            for (Card c : d.viewFaceUpCards()) {
+                if (c.contains(p)) {
+                    return d;
+                }
+            }
+
+            if (d.contains(p) && d.isEmpty()) {
+                return d;
             }
         }
         return null;
