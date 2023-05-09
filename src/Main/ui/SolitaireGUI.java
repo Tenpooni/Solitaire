@@ -76,7 +76,7 @@ public class SolitaireGUI extends JFrame {
         if (nextC != null) {
             solitaire.setSelection(nextC, nextS);
         } else if (nextS != null && nextS.isEmpty()) {
-            solitaire.checkMoveToBlank(nextS);
+            solitaire.checkMoveBlank(nextS);
         }
         repaint();
     }
@@ -96,9 +96,10 @@ public class SolitaireGUI extends JFrame {
         return currentDeckGUI.getCardAtPoint(point);
     }
 
-    public Stack getStackAtMouse(Point point) {
-        return currentDeckGUI.getStackAtPoint(point);
-    }
+    //TODO: not being used, to delete?
+//    public Stack getStackAtMouse(Point point) {
+//        return currentDeckGUI.getStackAtPoint(point);
+//    }
 
     //TODO: TEST METHOD WITH ABSTRACT DECK
     public Deck getDeckAtMouse(Point p) {

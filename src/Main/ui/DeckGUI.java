@@ -54,8 +54,26 @@ public class DeckGUI extends JPanel {
             String cardText = getCardText(topCard);
             Color textColor = getColor(topCard);
             paintFaceUpCard(g2d, cardText, textColor, xPos, yPos, topCard.isSelected());
+            topCard.setBound(new Rectangle(xPos, yPos, CARDWIDTH, CARDHEIGHT));
         }
     }
+
+    //EFFECTS: prints entire stack, each next card is cardOFFSET distance below the next
+    private void printStack(Graphics2D g2d, Stack stack, int xPos, int yPos) {
+        Collection<Card> cards = stack.viewReverseCards(true);
+        int deltaY = cardOFFSET;
+
+        stack.setBound(new Rectangle(xPos, yPos + deltaY, CARDWIDTH, CARDHEIGHT));
+        printStackBacking(g2d, xPos, yPos + deltaY);
+
+        for (Card c : cards) {
+            printCard(g2d, c, xPos, yPos + deltaY);
+            c.setBound(new Rectangle(xPos, yPos + deltaY, CARDWIDTH, CARDHEIGHT));
+            deltaY += cardOFFSET;
+        }
+    }
+
+
 
     //TODO:fix waste deck GUI, make waste class instead of using Stack
     private void printWasteStack(Graphics2D g2d, Stack stack, int xPos, int yPos) {
@@ -72,21 +90,6 @@ public class DeckGUI extends JPanel {
             paintFaceUpCard(g2d, cardText, textColor, xPos + deltaX, yPos, c.isSelected());
             c.setBound(new Rectangle(xPos + deltaX, yPos, CARDWIDTH, CARDHEIGHT));
             deltaX += cardOFFSET;
-        }
-    }
-
-    //EFFECTS: prints entire stack, each next card is cardOFFSET distance below the next
-    private void printStack(Graphics2D g2d, Stack stack, int xPos, int yPos) {
-        Collection<Card> cards = stack.viewReverseCards(true);
-        int deltaY = cardOFFSET;
-
-        stack.setBound(new Rectangle(xPos, yPos + deltaY, CARDWIDTH, CARDHEIGHT));
-        printStackBacking(g2d, xPos, yPos + deltaY);
-
-        for (Card c : cards) {
-            printCard(g2d, c, xPos, yPos + deltaY);
-            c.setBound(new Rectangle(xPos, yPos + deltaY, CARDWIDTH, CARDHEIGHT));
-            deltaY += cardOFFSET;
         }
     }
 
@@ -169,10 +172,11 @@ public class DeckGUI extends JPanel {
     }
 
 
+    //TODO: made into Decks not stacks
     //EFFECTS: returns card if point clicked contains one, null otherwise
     public Card getCardAtPoint(Point point) {
-        for (Stack s : solitaire.getAllStacks()) {
-            for (Card c : s.viewFaceUpCards()) {
+        for (Deck d : solitaire.getAllDecks()) {
+            for (Card c : d.viewFaceUpCards()) {
                 if (c.contains(point)) {
                     return c;
                 }
@@ -182,22 +186,22 @@ public class DeckGUI extends JPanel {
     }
 
     //TODO: NOT BEING USED, TO DELETE?
-    //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
-    public Stack getStackAtPoint(Point point) {
-        for (Stack s : solitaire.getAllStacks()) {
-            //Return stack if it has cards that contain point
-            for (Card c : s.viewFaceUpCards()) {
-                if (c.contains(point)) {
-                    return s;
-                }
-            }
-            //Return stack if it is empty and contains point
-            if (s.contains(point) && s.isEmpty()) {
-                return s;
-            }
-        }
-        return null;
-    }
+//    //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
+//    public Stack getStackAtPoint(Point point) {
+//        for (Stack s : solitaire.getAllStacks()) {
+//            //Return stack if it has cards that contain point
+//            for (Card c : s.viewFaceUpCards()) {
+//                if (c.contains(point)) {
+//                    return s;
+//                }
+//            }
+//            //Return stack if it is empty and contains point
+//            if (s.contains(point) && s.isEmpty()) {
+//                return s;
+//            }
+//        }
+//        return null;
+//    }
 
     public Deck getDeckAtPoint(Point p) {
         for (Deck d : solitaire.getAllDecks()) {

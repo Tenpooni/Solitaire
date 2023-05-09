@@ -55,10 +55,11 @@ public class Solitaire {
         return allDeck;
     }
 
-    //TODO: TEST METHOD
+    //TODO: FIX WASTE PART OF MAKING ALL DECKS
     public ArrayList<Deck> getAllDecks() {
         ArrayList<Deck> allDeck = new ArrayList<>(stacks);
         allDeck.add(this.waste);
+        allDeck.addAll(foundations);
         return allDeck;
     }
 
@@ -88,6 +89,8 @@ public class Solitaire {
     public void deselectAll() {
         if (this.prevC != null) {
             this.prevC.deSelect();
+
+            System.out.println("deselected");
         }
     }
 
@@ -103,46 +106,42 @@ public class Solitaire {
         this.prevS = nextS;
     }
 
-    //TODO: check if moving to blank(foundation) works
-    public void checkMoveToBlank(Deck nextS) {
+    public void checkMoveBlank(Deck nextS) {
         //3 conditions to move to blank foundation space: is Foundation instance,
         // card selected is value 1, card selected is index 0 (printed bottom up) from previous Deck
         if (nextS instanceof Stack) {
-            moveToBlankStack(nextS);
+            moveToDeck(nextS);;
         } else if (nextS instanceof Foundation) {
             moveToBlankFoundation(nextS);
+            System.out.println("move to blank foundation called");
         }
         deselectAll();
     }
 
-    private void moveToBlankFoundation(Deck nextS) {
-        //2 conditions: card moving in is value 1, position of card moving in is index 0 if from a selected stack
-
-
-//        if ((this.prevC.getCardValue() == 1) &&
-//                (prevS.getSelected(this.prevC).get(0).equals(this.prevC))) {
-            ArrayList<Card> selectedStack = prevS.getSelected(this.prevC);
-            prevS.removeCards(selectedStack, true);
-            nextS.addToFaceUpStack(selectedStack);
-        }
-    //}
-
-    private void moveToBlankStack(Deck nextS) {
-        ArrayList<Card> selectedStack = prevS.getSelected(this.prevC);
-        prevS.removeCards(selectedStack, true);
-        nextS.addToFaceUpStack(selectedStack);
-    }
-
     //TODO: ensure check method for move to Deck(Foundation) work properly
+    //TODO: moveToFoundation not getting called
     //REQUIRES: this.nextC != null, this.nextS != null,
     //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
     private void checkMoveCards(Card next, Deck nextS) {
         if (nextS instanceof Stack) {
             moveToStack(next, nextS);
+            System.out.println("move to blank stack called");
         } else if (nextS instanceof Foundation) {
             moveToFoundation(next, nextS);
+            System.out.println("move to blank foundation deck called");
         }
         deselectAll();
+    }
+
+
+
+    //TODO: moveToBlankFoundation method, card value 1 check works, check other condition
+    private void moveToBlankFoundation(Deck nextS) {
+        //2 conditions: card moving in is value 1, position of card moving in is index 0 if from a selected stack
+        if ((this.prevC.getCardValue() == 1) &&
+                (prevS.getSelected(this.prevC).get(0).equals(this.prevC))) {
+            moveToDeck(nextS);
+        }
     }
 
     //EFFECTS: move method if moving cards into non-empty Stack
@@ -152,9 +151,7 @@ public class Solitaire {
                 (this.prevC.isSelected()) &&
                 (nextS.getSelected(next).indexOf(next) == 0) &&
                 checkOppositeSuit(this.prevC, next)) {
-            ArrayList<Card> selectedStack = this.prevS.getSelected(this.prevC);
-            this.prevS.removeCards(selectedStack, true);
-            nextS.addToFaceUpStack(selectedStack);
+            moveToDeck(nextS);
         }
     }
 
@@ -168,13 +165,23 @@ public class Solitaire {
         return (c1Red || c1Black);
     }
 
+    //TODO: Is not getting called, then check if conditions not working
     private void moveToFoundation(Card next, Deck nextS) {
         //2 conditions: card being added is 1 value higher and shares same suit.
-        if ((this.prevC.getCardValue() - 1 == next.getCardValue()) && this.prevC.getSuit().equals(next.getSuit())) {
-            ArrayList<Card> selectedStack = this.prevS.getSelected(this.prevC);
-            this.prevS.removeCards(selectedStack, true);
-            nextS.addToFaceUpStack(selectedStack);
+        if ((this.prevC.getCardValue() - 1 == next.getCardValue()) &&
+                (this.prevC.getSuit().equals(next.getSuit()))) {
+            moveToDeck(nextS);
         }
+        System.out.println(this.prevC);
+        System.out.println(next.getCardValue());
+        System.out.println(this.prevC.getSuit());
+        System.out.println(next.getSuit());
+    }
+
+    private void moveToDeck(Deck nextS) {
+        ArrayList<Card> selectedStack = this.prevS.getSelected(this.prevC);
+        this.prevS.removeCards(selectedStack, true);
+        nextS.addToFaceUpStack(selectedStack);
     }
 
 
