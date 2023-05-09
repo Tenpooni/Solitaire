@@ -5,25 +5,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class Stack extends Deck{
-//    private final String name;
-      private final int flipOver = 1;
-//    private ArrayList<Card> faceUp;
-//    private ArrayList<Card> faceDown;
-//    private Rectangle bound;
+
+      private int flipOver = 1;
 
     public Stack(String str) {
-//        this.name = str;
-//        this.turnOver = turnOver;
         super(str);
-//        this.faceUp = new ArrayList<>();
-//        this.faceDown = new ArrayList<>();
     }
 
-//    //EFFECTS: returns unmodifiable list of all active cards
-//    public List<Card> viewFaceUpCards() {
-//        ArrayList<Card> cards = new ArrayList<>(this.faceUp);
-//        return Collections.unmodifiableList(cards);
-//    }
+    public void setFlip(int i) {
+        flipOver = i;
+    }
 
     //TODO: GUI prints in reverse order, fix this method?
     public List<Card> viewReverseCards(boolean faceDown) {
@@ -36,7 +27,6 @@ public class Stack extends Deck{
     }
 
     //EFFECTS: Adds all cards first into faceDown pile then calls organizeStack to sort
-    @Override
     public void addCards(ArrayList<Card> cards) {
         this.faceDown.addAll(cards);
         organizeStack();
@@ -89,11 +79,6 @@ public class Stack extends Deck{
         return selectedCards;
     }
 
-
-
-
-
-
     //ONLY TO BE CALLED IF SELECTED STACK GETTING MOVED OUT IS VALID
     //EFFECTS: Called by getSelectedStack, removes selected cards from this deck
     @Override
@@ -101,7 +86,7 @@ public class Stack extends Deck{
         if (faceUp) {
             for (Card c : cards) {
                 this.faceUp.remove(c);
-                turnOver();
+                drawNewFaceUp();
             }
         } else {
             for (Card c : cards) {
@@ -114,7 +99,7 @@ public class Stack extends Deck{
     //ONLY CALLED FOR FACEUP CARDS GETTING REMOVED
     //EFFECTS: If there is no faceUp cards left, turn over
     @Override
-    protected void turnOver() {
+    protected void drawNewFaceUp() {
         if (this.faceUp.size() == 0 && this.faceDown.size() >= this.flipOver) {
             flipUp(flipOver);
             organizeStack();
@@ -122,7 +107,6 @@ public class Stack extends Deck{
     }
 
     //EFFECTS: flips i amount of faceDown Cards into faceUp starting from lowest index, maintains order.
-    @Override
     public void flipUp(int i) {
         int numFaceDown = this.faceDown.size();
         int toFlip = Math.min(i, numFaceDown);
@@ -174,22 +158,4 @@ public class Stack extends Deck{
         cards.addAll(this.faceDown);
         return Collections.unmodifiableList(cards);
     }
-
-
-//    //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
-//    public void setBound(Rectangle bound) {
-//        this.bound = bound;
-//    }
-
-//    // EFFECTS: return true if the given Point (x,y) is contained within the bounds of this Stack
-//    public boolean contains(Point point) {
-//        return this.bound.contains(point);
-//    }
-
-//    //REQUIRES: this.faceUp != null, this.faceDown != null
-//    //EFFECTS: return true if no faceUp or faceDown cards.
-//    public boolean isEmpty() {
-//        return (this.faceDown.size() == 0 && this.faceUp.size() == 0);
-//    }
-
 }

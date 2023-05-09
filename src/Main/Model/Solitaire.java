@@ -44,6 +44,8 @@ public class Solitaire {
         this.f3 = new Foundation("F3");
         this.f4 = new Foundation("F4");
         this.waste = new Stack("Waste");
+        //TODO: remove waste setflip method when not needed
+        waste.setFlip(3);
 
         makeDeck();
         initiateDeck();

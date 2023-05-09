@@ -68,7 +68,6 @@ public class SolitaireGUI extends JFrame {
         Deck nextS = getDeckAtMouse(e.getPoint());
         Card nextC = getCardAtMouse(e.getPoint());
 
-        //solitaire.deselectAll();
         if (nextC == null) {
             solitaire.deselectAll();
         }
@@ -95,11 +94,6 @@ public class SolitaireGUI extends JFrame {
     public Card getCardAtMouse(Point point) {
         return currentDeckGUI.getCardAtPoint(point);
     }
-
-    //TODO: not being used, to delete?
-//    public Stack getStackAtMouse(Point point) {
-//        return currentDeckGUI.getStackAtPoint(point);
-//    }
 
     //TODO: TEST METHOD WITH ABSTRACT DECK
     public Deck getDeckAtMouse(Point p) {

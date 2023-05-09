@@ -21,14 +21,10 @@ public abstract class Deck{
 
     protected abstract void removeCards(ArrayList<Card> cards, boolean faceUp);
 
-    protected abstract void turnOver();
-
-    protected abstract void flipUp(int i);
+    protected abstract void drawNewFaceUp();
 
     //REQUIRES: cardsToFlip cards are present in stack
     protected abstract void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp);
-
-    protected abstract void addCards(ArrayList<Card> cards);
 
     protected abstract ArrayList<Card> getSelected(Card c);
 

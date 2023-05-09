@@ -185,24 +185,6 @@ public class DeckGUI extends JPanel {
         return null;
     }
 
-    //TODO: NOT BEING USED, TO DELETE?
-//    //EFFECTS: returns stack containing the card if point clicked contains card, null otherwise
-//    public Stack getStackAtPoint(Point point) {
-//        for (Stack s : solitaire.getAllStacks()) {
-//            //Return stack if it has cards that contain point
-//            for (Card c : s.viewFaceUpCards()) {
-//                if (c.contains(point)) {
-//                    return s;
-//                }
-//            }
-//            //Return stack if it is empty and contains point
-//            if (s.contains(point) && s.isEmpty()) {
-//                return s;
-//            }
-//        }
-//        return null;
-//    }
-
     public Deck getDeckAtPoint(Point p) {
         for (Deck d : solitaire.getAllDecks()) {
 
