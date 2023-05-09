@@ -74,14 +74,16 @@ public class DeckGUI extends JPanel {
     }
 
 
+    //TODO:fix waste deck GUI, stagger out backing area
+    private void printWasteStack(Graphics2D g2d, Waste waste, int xPos, int yPos) {
+        Collection<Card> cards = waste.viewReverseCards(false);
 
-    //TODO:fix waste deck GUI, make waste class instead of using Stack
-    private void printWasteStack(Graphics2D g2d, Stack stack, int xPos, int yPos) {
-        Collection<Card> cards = stack.viewReverseCards(false);
-        int deltaX = 0;
 
-        stack.setBound(new Rectangle(xPos + deltaX, yPos, CARDWIDTH, CARDHEIGHT));
-        printStackBacking(g2d, xPos + deltaX, yPos);
+        waste.setBound(new Rectangle(xPos, yPos, CARDWIDTH, CARDHEIGHT));
+        printStackBacking(g2d, xPos, yPos);
+        paintFaceDownCard(g2d, xPos, yPos);
+
+        int deltaX = cardOFFSET * 5;
 
         for (Card c: cards) {
             String cardText = getCardText(c);
@@ -193,6 +195,10 @@ public class DeckGUI extends JPanel {
                     return d;
                 }
             }
+
+//            if (d.contains(p)) {
+//                return d;
+//            }
 
             if (d.contains(p) && d.isEmpty()) {
                 return d;

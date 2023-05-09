@@ -8,11 +8,20 @@ public class Foundation extends Deck{
         super(str);
     }
 
+
     @Override
-    protected void removeCards(ArrayList<Card> cards, boolean faceUp) {
-        Card c = cards.get(0);
-        this.faceUp.remove(c);
-        drawNewFaceUp();
+    protected void removeFaceUpCards(ArrayList<Card> cards) {
+        if (cards != null) {
+            Card c = cards.get(0);
+            this.faceUp.remove(c);
+        }
+    }
+
+    @Override
+    protected void refreshCards() {
+        if (this.faceUp.size() == 0) {
+            drawNewFaceUp();
+        }
     }
 
     //EFFECTS:
@@ -24,6 +33,19 @@ public class Foundation extends Deck{
             this.faceUp.add(0, c);
         }
     }
+
+//    @Override
+//    protected void addCards(ArrayList<Card> cards, boolean toFaceUp) {
+//        if (this.faceUp.size() > 0) {
+//            Card toFaceDown = this.faceUp.get(0);
+//            this.faceDown.add(0, toFaceDown);
+//            this.faceUp.clear();
+//        }
+//
+//        Card c = cards.get(0);
+//        System.out.println(c);
+//        this.faceUp.add(0, c);
+//    }
 
 
     @Override
@@ -38,7 +60,7 @@ public class Foundation extends Deck{
 
     //TODO: Duplicated method from addCards, to fix?
     @Override
-    public void addToFaceUpStack(ArrayList<Card> selected) {
+    public void addToFaceUpCards(ArrayList<Card> selected) {
         if (this.faceUp.size() > 0) {
             Card toFaceDown = this.faceUp.get(0);
             this.faceDown.add(0, toFaceDown);
@@ -48,6 +70,11 @@ public class Foundation extends Deck{
         Card c = selected.get(0);
         System.out.println(c);
         this.faceUp.add(0, c);
+    }
+
+    @Override
+    public void addToFaceDownCards(ArrayList<Card> selected) {
+        this.faceDown.addAll(selected);
     }
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)

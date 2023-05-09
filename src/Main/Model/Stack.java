@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Stack extends Deck{
 
-      private int flipOver = 1;
+    private int flipOver = 1;
 
     public Stack(String str) {
         super(str);
@@ -26,11 +26,12 @@ public class Stack extends Deck{
         return Collections.unmodifiableList(cards);
     }
 
-    //EFFECTS: Adds all cards first into faceDown pile then calls organizeStack to sort
-    public void addCards(ArrayList<Card> cards) {
-        this.faceDown.addAll(cards);
-        organizeStack();
-    }
+//    //EFFECTS: Adds all cards first into faceDown pile then calls organizeStack to sort
+//    @Override
+//    public void addCards(ArrayList<Card> cards, boolean toFaceUp) {
+//        this.faceDown.addAll(cards);
+//        organizeStack();
+//    }
 
     //EFFECTS: FaceUp cards are kept in order and placed at front of deck, FaceDown cards at back
     private void organizeStack() {
@@ -50,12 +51,17 @@ public class Stack extends Deck{
                 this.faceDown.add(card);
             }
         }
-        addToFaceUpStack(faceUps);
+        addToFaceUpCards(faceUps);
+    }
+
+    @Override
+    public void addToFaceDownCards(ArrayList<Card> selected) {
+        this.faceDown.addAll(selected);
     }
 
     //EFFECTS: selected cards STAY IN ORDER and are appended at index 0 of this deck
     @Override
-    public void addToFaceUpStack(ArrayList<Card> selected) {
+    public void addToFaceUpCards(ArrayList<Card> selected) {
 
         Collections.reverse(selected);
 
@@ -63,6 +69,7 @@ public class Stack extends Deck{
             this.faceUp.add(0, card);
         }
     }
+
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
     //EFFECTS: selected cards from own faceUp list put in new list for holding while still maintaining order
@@ -82,17 +89,16 @@ public class Stack extends Deck{
     //ONLY TO BE CALLED IF SELECTED STACK GETTING MOVED OUT IS VALID
     //EFFECTS: Called by getSelectedStack, removes selected cards from this deck
     @Override
-    public void removeCards(ArrayList<Card> cards, boolean faceUp) {
-        if (faceUp) {
-            for (Card c : cards) {
-                this.faceUp.remove(c);
-                drawNewFaceUp();
-            }
-        } else {
-            for (Card c : cards) {
-                this.faceDown.remove(c);
-            }
+    public void removeFaceUpCards(ArrayList<Card> cards) {
+        for (Card c : cards) {
+            this.faceUp.remove(c);
+            drawNewFaceUp();
         }
+    }
+
+    @Override
+    protected void refreshCards() {
+        //blank
     }
 
 
@@ -102,7 +108,7 @@ public class Stack extends Deck{
     protected void drawNewFaceUp() {
         if (this.faceUp.size() == 0 && this.faceDown.size() >= this.flipOver) {
             flipUp(flipOver);
-            organizeStack();
+            //organizeStack();
         }
     }
 
@@ -117,10 +123,17 @@ public class Stack extends Deck{
             cardsToFlip.add(this.faceDown.get(j));
         }
 
-        removeCards(cardsToFlip, false);
+        removeFaceDownCards(cardsToFlip);
         flipCards(cardsToFlip, true);
 
-        addCards(cardsToFlip);
+        addToFaceUpCards(cardsToFlip);
+    }
+
+    //HELPER
+    private void removeFaceDownCards(ArrayList<Card> cards) {
+        for (Card c : cards) {
+            this.faceDown.remove(c);
+        }
     }
 
     //REQUIRES: cardsToFlip cards are present in stack

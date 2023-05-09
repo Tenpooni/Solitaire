@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Waste extends Deck{
 
-    private int flipOver = 1;
+    private int flipOver = 3;
 
     public Waste(String str) {
         super(str);
@@ -22,32 +22,38 @@ public class Waste extends Deck{
         return Collections.unmodifiableList(cards);
     }
 
-    //TODO: this incorporated part of addToFaceUpStack, check if other method still needed.
-    //EFFECTS: Adds all cards first into faceDown pile then calls organizeStack to sort
-    public void addCards(ArrayList<Card> cards, boolean toFaceUp) {
-        if (toFaceUp) {
-            Collections.reverse(cards);
+//    //EFFECTS: Adds all cards first into faceDown pile then calls organizeStack to sort
+//    @Override
+//    public void addCards(ArrayList<Card> cards, boolean toFaceUp) {
+//        if (toFaceUp) {
+//            Collections.reverse(cards);
+//
+//            for (Card card : cards) {
+//                this.faceUp.add(0, card);
+//            }
+//        } else {
+//            this.faceDown.addAll(cards);
+//        }
+//    }
 
-            for (Card card : cards) {
-                this.faceUp.add(0, card);
-            }
-        } else {
-            this.faceDown.addAll(cards);
+    //TODO: FIX THIS
+    //EFFECTS: removes given card from faceUp list if faceUp contains cards and index of given is 0.
+    @Override
+    protected void removeFaceUpCards(ArrayList<Card> cards) {
+        //3 condition: Can remove if existing cards in FaceUp and selected card is index 0 of faceUps
+        if (cards != null &&
+                this.faceUp.size() > 0 &&
+                this.faceUp.indexOf(cards.get(0)) == 0) {
+
+            this.faceUp.remove(cards.get(0));
         }
     }
 
     @Override
-    protected void removeCards(ArrayList<Card> cards, boolean faceUp) {
-        if (faceUp) {
-            for (Card c : cards) {
-                this.faceUp.remove(c);
-                setAllFaceDown();
-                drawNewFaceUp();
-            }
-        } else {
-            for (Card c : cards) {
-                this.faceDown.remove(c);
-            }
+    protected void refreshCards() {
+        //After removing cards, check if waste deck faceUps is out of cards.
+        if (this.faceUp.size() == 0) {
+            drawNewFaceUp();
         }
     }
 
@@ -65,10 +71,16 @@ public class Waste extends Deck{
             cardsToFlip.add(this.faceDown.get(j));
         }
 
-        removeCards(cardsToFlip, false);
+        removeFaceDown(cardsToFlip);
         flipCards(cardsToFlip, true);
 
-        addCards(cardsToFlip, true);
+        addToFaceUpCards(cardsToFlip);
+    }
+
+    private void removeFaceDown(ArrayList<Card> cards) {
+        if (this.faceDown.size() > 0) {
+            this.faceDown.remove(cards.get(0));
+        }
     }
 
     //TODO: for use refreshing draw deck?
@@ -105,11 +117,16 @@ public class Waste extends Deck{
     }
 
     @Override
-    protected void addToFaceUpStack(ArrayList<Card> selected) {
+    protected void addToFaceUpCards(ArrayList<Card> selected) {
         Collections.reverse(selected);
 
         for (Card card : selected) {
             this.faceUp.add(0, card);
         }
+    }
+
+    @Override
+    public void addToFaceDownCards(ArrayList<Card> selected) {
+        this.faceDown.addAll(selected);
     }
 }

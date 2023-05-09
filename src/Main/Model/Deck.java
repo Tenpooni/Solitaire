@@ -19,16 +19,22 @@ public abstract class Deck{
 
 
 
-    protected abstract void removeCards(ArrayList<Card> cards, boolean faceUp);
+    protected abstract void removeFaceUpCards(ArrayList<Card> cards);
 
     protected abstract void drawNewFaceUp();
+
+    protected abstract void refreshCards();
+
+    //protected abstract void addCards(ArrayList<Card> cards, boolean toFaceUp);
 
     //REQUIRES: cardsToFlip cards are present in stack
     protected abstract void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp);
 
     protected abstract ArrayList<Card> getSelected(Card c);
 
-    protected abstract void addToFaceUpStack(ArrayList<Card> selected);
+    protected abstract void addToFaceUpCards(ArrayList<Card> selected);
+
+    protected abstract void addToFaceDownCards(ArrayList<Card> selected);
 
     //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
     public void setBound(Rectangle bound) {

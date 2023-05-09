@@ -9,8 +9,9 @@ public class Solitaire {
     private final ArrayList<Card> fullDeck = new ArrayList<>();
 
     //List of Interactive decks
-    private ArrayList<Stack> stacks = new ArrayList<>();
-    private ArrayList<Foundation> foundations = new ArrayList<>();
+    private final ArrayList<Stack> stacks = new ArrayList<>();
+    private final ArrayList<Foundation> foundations = new ArrayList<>();
+
 
     private Card prevC;
     private Deck prevS;
@@ -24,7 +25,7 @@ public class Solitaire {
     private final Stack s7;
 
     //TODO: FIX WASTE
-    private final Stack waste;
+    private final Waste waste;
     private final Foundation f1;
     private final Foundation f2;
     private final Foundation f3;
@@ -43,21 +44,12 @@ public class Solitaire {
         this.f2 = new Foundation("F2");
         this.f3 = new Foundation("F3");
         this.f4 = new Foundation("F4");
-        this.waste = new Stack("Waste");
-        //TODO: remove waste setflip method when not needed
-        waste.setFlip(3);
+        this.waste = new Waste("Waste");
 
         makeDeck();
         initiateDeck();
     }
 
-    public ArrayList<Stack> getAllStacks() {
-        ArrayList<Stack> allDeck = new ArrayList<>(stacks);
-        allDeck.add(this.waste);
-        return allDeck;
-    }
-
-    //TODO: FIX WASTE PART OF MAKING ALL DECKS
     public ArrayList<Deck> getAllDecks() {
         ArrayList<Deck> allDeck = new ArrayList<>(stacks);
         allDeck.add(this.waste);
@@ -65,27 +57,17 @@ public class Solitaire {
         return allDeck;
     }
 
-
     public ArrayList<Stack> getPlayingDecks() {
         return stacks;
     }
 
-    public Stack getWasteDeck() {
+    public Waste getWasteDeck() {
         return waste;
     }
 
     public ArrayList<Foundation> getFoundationDecks() {
         return foundations;
     }
-
-
-
-
-
-
-
-
-
 
     //EFFECTS: clears current selected card
     public void deselectAll() {
@@ -96,51 +78,57 @@ public class Solitaire {
         }
     }
 
-    //TODO: use solitaire class' this.prevC and this.prevS instead of passing into checkMoveCards method?
     //EFFECTS: checks if current selection (Card) exists,
     //if next selection is valid then move selected stack, otherwise set as next selection
     public void setSelection(Card nextC, Deck nextS) {
         if (this.prevC != null) {
             checkMoveCards(nextC, nextS);
         }
+
+        //TODO: FIX THIS this for waste deck
+        if (nextS instanceof Waste) {
+            flipWasteDeck(nextS);
+        }
+
         nextC.select();
         this.prevC = nextC;
         this.prevS = nextS;
+    }
+
+    //TODO: CALL THIS METHOD TO FLIP WASTE DECK
+    public void flipWasteDeck(Deck nextD) {
+        ArrayList<Card> faceUps = new ArrayList<>(getWasteDeck().faceUp);
+        ((Waste) nextD).setAllFaceDown();
+        nextD.drawNewFaceUp();
     }
 
     public void checkMoveBlank(Deck nextS) {
         //3 conditions to move to blank foundation space: is Foundation instance,
         // card selected is value 1, card selected is index 0 (printed bottom up) from previous Deck
         if (nextS instanceof Stack) {
-            moveToDeck(nextS);;
+            moveToDeck(nextS);
         } else if (nextS instanceof Foundation) {
             moveToBlankFoundation(nextS);
-            System.out.println("move to blank foundation called");
         }
         deselectAll();
     }
 
-    //TODO: ensure check method for move to Deck(Foundation) work properly
-    //TODO: moveToFoundation not getting called
     //REQUIRES: this.nextC != null, this.nextS != null,
     //EFFECTS: verifies can only move card value of opposite suit color and 1 lower onto new stack
     private void checkMoveCards(Card next, Deck nextS) {
         if (nextS instanceof Stack) {
             moveToStack(next, nextS);
-            System.out.println("move to blank stack called");
         } else if (nextS instanceof Foundation) {
             moveToFoundation(next, nextS);
-            System.out.println("move to blank foundation deck called");
         }
         deselectAll();
     }
 
-
-
-    //TODO: moveToBlankFoundation method, card value 1 check works, check other condition
+    //TODO: moveToBlankFoundation method, how to remove null check?
     private void moveToBlankFoundation(Deck nextS) {
         //2 conditions: card moving in is value 1, position of card moving in is index 0 if from a selected stack
         if ((this.prevC.getCardValue() == 1) &&
+                (prevS.getSelected(this.prevC) != null) &&
                 (prevS.getSelected(this.prevC).get(0).equals(this.prevC))) {
             moveToDeck(nextS);
         }
@@ -167,28 +155,20 @@ public class Solitaire {
         return (c1Red || c1Black);
     }
 
-    //TODO: Is not getting called, then check if conditions not working
     private void moveToFoundation(Card next, Deck nextS) {
         //2 conditions: card being added is 1 value higher and shares same suit.
         if ((this.prevC.getCardValue() - 1 == next.getCardValue()) &&
                 (this.prevC.getSuit().equals(next.getSuit()))) {
             moveToDeck(nextS);
         }
-        System.out.println(this.prevC);
-        System.out.println(next.getCardValue());
-        System.out.println(this.prevC.getSuit());
-        System.out.println(next.getSuit());
     }
 
     private void moveToDeck(Deck nextS) {
         ArrayList<Card> selectedStack = this.prevS.getSelected(this.prevC);
-        this.prevS.removeCards(selectedStack, true);
-        nextS.addToFaceUpStack(selectedStack);
+        this.prevS.removeFaceUpCards(selectedStack);
+        this.prevS.refreshCards();
+        nextS.addToFaceUpCards(selectedStack);
     }
-
-
-
-
 
 
 
@@ -234,11 +214,11 @@ public class Solitaire {
     }
 
     //EFFECTS: select amount of faceDown and faceUp cards to add to a deck
-    private void shuffle(Stack into, int faceDown, int faceUp) {
+    private void shuffle(Deck into, int faceDown, int faceUp) {
         ArrayList<Card> faceDownCards = setFace(drawNumCards(faceDown), false);
         ArrayList<Card> faceUpCards = setFace(drawNumCards(faceUp), true);
-        into.addCards(faceDownCards);
-        into.addCards(faceUpCards);
+        into.addToFaceDownCards(faceDownCards);
+        into.addToFaceUpCards(faceUpCards);
     }
 
     //EFFECTS: converts entire list of given cards into faceUp or faceDown
