@@ -72,8 +72,6 @@ public class DeckGUI extends JPanel {
         }
     }
 
-
-    //TODO:fix waste deck GUI,
     private void printWasteStack(Graphics2D g2d, Waste waste, int xPos, int yPos) {
         Collection<Card> cards = waste.viewReverseCards(false);
 
@@ -96,7 +94,6 @@ public class DeckGUI extends JPanel {
 
     //EFFECTS: prints either faceUp or faceDown card
     private void printCard(Graphics2D g2d, Card c, int xPos, int yPos) {
-        //Graphics2D cardGraphic = (Graphics2D) g2d.create();
         String cardText = getCardText(c);
         Color textColor = getColor(c);
         if (c.getFaceUp()) {
@@ -104,7 +101,6 @@ public class DeckGUI extends JPanel {
         } else {
             paintFaceDownCard(g2d, xPos, yPos);
         }
-        //cardGraphic.dispose();
     }
 
     //EFFECTS: helper function for drawing card base, border is thicker/orange if the card is currently selected
@@ -185,6 +181,7 @@ public class DeckGUI extends JPanel {
     }
 
     public Deck getDeckAtPoint(Point p) {
+
         for (Deck d : solitaire.getAllDecks()) {
 
             for (Card c : d.viewFaceUpCards()) {
@@ -196,11 +193,6 @@ public class DeckGUI extends JPanel {
             if (d.contains(p)) {
                 return d;
             }
-
-
-//            if (d.contains(p) && d.isEmpty()) {
-//                return d;
-//            }
         }
         return null;
     }

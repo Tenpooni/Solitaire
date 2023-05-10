@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Stack extends Deck{
 
-    private int flipOver = 1;
+    private final int flipOver = 1;
 
     public Stack(String str) {
         super(str);
@@ -49,30 +49,9 @@ public class Stack extends Deck{
         }
     }
 
-    //EFFECTS: add to faceDowns
-    @Override
-    public void addToFaceDownCards(ArrayList<Card> selected) {
-        this.faceDown.addAll(selected);
-    }
-
     @Override
     protected void refreshCards() {
         //blank
-    }
-
-    //REQUIRES: cardsToFlip cards are present in stack
-    //EFFECTS: flips cards
-    @Override
-    public void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp) {
-        if (makeFaceUp) {
-            for (Card card : cardsToFlip) {
-                card.setFaceUp();
-            }
-        } else {
-            for (Card card : cardsToFlip) {
-                card.setFaceDown();
-            }
-        }
     }
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)
@@ -108,7 +87,6 @@ public class Stack extends Deck{
         addToFaceUpCards(cardsToFlip);
     }
 
-    //TODO: GUI prints in reverse order, fix this method?
     public List<Card> viewReverseCards(boolean faceDown) {
         ArrayList<Card> cards = new ArrayList<>(this.faceUp);
         if (faceDown) {

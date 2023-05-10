@@ -12,7 +12,6 @@ public class Solitaire {
     private final ArrayList<Stack> stacks = new ArrayList<>();
     private final ArrayList<Foundation> foundations = new ArrayList<>();
 
-
     private Card prevC;
     private Deck prevS;
 
@@ -84,19 +83,12 @@ public class Solitaire {
             checkMoveCards(nextC, nextS);
         }
 
-        //TODO: FIX THIS this for waste deck
-//        if (nextS instanceof Waste) {
-//            flipWasteDeck(nextS);
-//        }
-
         nextC.select();
         this.prevC = nextC;
         this.prevS = nextS;
     }
 
-    //TODO: CALL THIS METHOD TO FLIP WASTE DECK
     public void flipWasteDeck(Deck nextD) {
-        ArrayList<Card> faceUps = new ArrayList<>(getWasteDeck().faceUp);
         ((Waste) nextD).setAllFaceDown();
         nextD.drawNewFaceUp();
     }
@@ -123,7 +115,6 @@ public class Solitaire {
         deselectAll();
     }
 
-    //TODO: moveToBlankFoundation method, how to remove null check?
     private void moveToBlankFoundation(Deck nextS) {
         //2 conditions: card moving in is value 1, position of card moving in is index 0 if from a selected stack
         if ((this.prevC.getCardValue() == 1) &&
@@ -168,15 +159,6 @@ public class Solitaire {
         this.prevS.refreshCards();
         nextS.addToFaceUpCards(selectedStack);
     }
-
-
-
-
-
-
-
-
-
 
     //EFFECTS: Initiate 52 cards in starting deck
     private void makeDeck() {

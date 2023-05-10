@@ -17,24 +17,32 @@ public abstract class Deck{
         this.faceDown = new ArrayList<>(0);
     }
 
-
-
     protected abstract void removeFaceUpCards(ArrayList<Card> cards);
 
     protected abstract void drawNewFaceUp();
 
     protected abstract void refreshCards();
 
-    //protected abstract void addCards(ArrayList<Card> cards, boolean toFaceUp);
-
-    //REQUIRES: cardsToFlip cards are present in stack
-    protected abstract void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp);
-
     protected abstract ArrayList<Card> getSelected(Card c);
 
     protected abstract void addToFaceUpCards(ArrayList<Card> selected);
 
-    protected abstract void addToFaceDownCards(ArrayList<Card> selected);
+
+    public void addToFaceDownCards(ArrayList<Card> selected) {
+        this.faceDown.addAll(selected);
+    }
+
+    public void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp) {
+        if (makeFaceUp) {
+            for (Card card : cardsToFlip) {
+                card.setFaceUp();
+            }
+        } else {
+            for (Card card : cardsToFlip) {
+                card.setFaceDown();
+            }
+        }
+    }
 
     //EFFECTS: setter, used for Stack GUI when faceUp/faceDown cards are out
     public void setBound(Rectangle bound) {

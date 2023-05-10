@@ -40,13 +40,6 @@ public class Foundation extends Deck{
         this.faceUp.add(0, c);
     }
 
-    //EFFECTS: adds to faceDown cards
-    @Override
-    public void addToFaceDownCards(ArrayList<Card> selected) {
-        this.faceDown.addAll(selected);
-    }
-
-
 
     //EFFECTS: If there are no faceUp cards displayed, draw 1 faceUp
     @Override
@@ -54,11 +47,6 @@ public class Foundation extends Deck{
         if (this.faceUp.size() == 0) {
             drawNewFaceUp();
         }
-    }
-
-    @Override
-    protected void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp) {
-        //
     }
 
     //REQUIRES: Card c.isFaceUp = True, this.faceUp.contains(Card c)

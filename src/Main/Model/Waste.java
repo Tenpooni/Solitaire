@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Waste extends Deck{
 
-    private int flipOver = 3;
+    private final int flipOver = 3;
 
     public Waste(String str) {
         super(str);
@@ -15,11 +15,8 @@ public class Waste extends Deck{
     //Flips 3 faceDown cards or however many remain in Waste into faceUps
     @Override
     protected void drawNewFaceUp() {
-        int toFlip = flipOver;
 
-        if (this.faceDown.size() < flipOver) {
-            toFlip = this.faceDown.size();
-        }
+        int toFlip = Math.min(this.faceDown.size(), flipOver);
 
         ArrayList<Card> cardsToFlip = new ArrayList<>();
 
@@ -57,29 +54,11 @@ public class Waste extends Deck{
         }
     }
 
-    @Override
-    public void addToFaceDownCards(ArrayList<Card> selected) {
-        this.faceDown.addAll(selected);
-    }
-
     //EFFECTS: check if waste deck faceUps is out of cards, draw new
     @Override
     protected void refreshCards() {
         if (this.faceUp.size() == 0) {
             drawNewFaceUp();
-        }
-    }
-
-    @Override
-    protected void flipCards(ArrayList<Card> cardsToFlip, boolean makeFaceUp) {
-        if (makeFaceUp) {
-            for (Card card : cardsToFlip) {
-                card.setFaceUp();
-            }
-        } else {
-            for (Card card : cardsToFlip) {
-                card.setFaceDown();
-            }
         }
     }
 
@@ -95,8 +74,6 @@ public class Waste extends Deck{
         return selectedCards;
     }
 
-
-
     //EFFECTS: sets all faceUp into faceDown cards, no removals
     public void setAllFaceDown() {
         ArrayList<Card> faceUps = new ArrayList<>(this.faceUp);
@@ -104,7 +81,6 @@ public class Waste extends Deck{
         this.faceDown.addAll(faceUps);
     }
 
-    //TODO: GUI prints in reverse order, fix this method?
     public List<Card> viewReverseCards(boolean faceDown) {
         ArrayList<Card> cards = new ArrayList<>(this.faceUp);
         if (faceDown) {

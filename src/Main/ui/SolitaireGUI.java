@@ -18,7 +18,6 @@ public class SolitaireGUI extends JFrame {
     private DeckGUI currentDeckGUI;
     private final Solitaire solitaire;
 
-
     public SolitaireGUI() {
         super("Solitaire");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,11 +26,6 @@ public class SolitaireGUI extends JFrame {
 
         initializeGraphics();
         initializeInteraction();
-    }
-
-    private void centreOnScreen() {
-        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screen.width - getWidth()) / 2, (screen.height - getHeight()) / 2);
     }
 
     // EFFECTS:  initializes a MouseListener to be used in the JFrame
@@ -50,6 +44,11 @@ public class SolitaireGUI extends JFrame {
         pack();
         centreOnScreen();
         setVisible(true);
+    }
+
+    private void centreOnScreen() {
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screen.width - getWidth()) / 2, (screen.height - getHeight()) / 2);
     }
 
     private void addDeckGUI() {
@@ -81,6 +80,7 @@ public class SolitaireGUI extends JFrame {
 
     //MouseAdapter class
     private class Click extends MouseAdapter {
+
         public void mouseClicked(MouseEvent e) {
             handleMouseClick(translateEvent(e));
         }
