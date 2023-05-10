@@ -24,7 +24,6 @@ public class Solitaire {
     private final Stack s6;
     private final Stack s7;
 
-    //TODO: FIX WASTE
     private final Waste waste;
     private final Foundation f1;
     private final Foundation f2;
@@ -86,9 +85,9 @@ public class Solitaire {
         }
 
         //TODO: FIX THIS this for waste deck
-        if (nextS instanceof Waste) {
-            flipWasteDeck(nextS);
-        }
+//        if (nextS instanceof Waste) {
+//            flipWasteDeck(nextS);
+//        }
 
         nextC.select();
         this.prevC = nextC;

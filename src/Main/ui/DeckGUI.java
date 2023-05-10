@@ -27,7 +27,6 @@ public class DeckGUI extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g.create();
 
-        //TODO: FIX WASTE STACK
         printWasteStack(g2d, solitaire.getWasteDeck(), stackOFFSET, 10);
 
         int stackDeltaX = 0;
@@ -74,7 +73,7 @@ public class DeckGUI extends JPanel {
     }
 
 
-    //TODO:fix waste deck GUI, stagger out backing area
+    //TODO:fix waste deck GUI,
     private void printWasteStack(Graphics2D g2d, Waste waste, int xPos, int yPos) {
         Collection<Card> cards = waste.viewReverseCards(false);
 
@@ -173,8 +172,6 @@ public class DeckGUI extends JPanel {
         g2d.drawString(text, 0, fm.getAscent());
     }
 
-
-    //TODO: made into Decks not stacks
     //EFFECTS: returns card if point clicked contains one, null otherwise
     public Card getCardAtPoint(Point point) {
         for (Deck d : solitaire.getAllDecks()) {
@@ -196,13 +193,14 @@ public class DeckGUI extends JPanel {
                 }
             }
 
-//            if (d.contains(p)) {
-//                return d;
-//            }
-
-            if (d.contains(p) && d.isEmpty()) {
+            if (d.contains(p)) {
                 return d;
             }
+
+
+//            if (d.contains(p) && d.isEmpty()) {
+//                return d;
+//            }
         }
         return null;
     }

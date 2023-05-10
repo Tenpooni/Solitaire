@@ -3,6 +3,7 @@ package ui;
 import Model.Card;
 import Model.Deck;
 import Model.Solitaire;
+import Model.Waste;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,8 +59,6 @@ public class SolitaireGUI extends JFrame {
         validate();
     }
 
-
-    //TODO: Add foundation deck handling to mouseclick event
     //REQUIRES: selected card must be faceUp
     //EFFECTS: When a card is clicked, clear previous selection, make new card selected.
     private void handleMouseClick(MouseEvent e) {
@@ -74,6 +73,8 @@ public class SolitaireGUI extends JFrame {
             solitaire.setSelection(nextC, nextS);
         } else if (nextS != null && nextS.isEmpty()) {
             solitaire.checkMoveBlank(nextS);
+        } else if (nextS instanceof Waste) {
+            solitaire.flipWasteDeck(nextS);
         }
         repaint();
     }
